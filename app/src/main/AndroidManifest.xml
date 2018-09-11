@@ -40,6 +40,10 @@
         <activity
             android:name=".EditGearActivity"
             android:label="@string/title_activity_edit_gear"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CategoriesListActivity"
+            android:label="@string/title_activity_categories"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
