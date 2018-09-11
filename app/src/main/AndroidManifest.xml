@@ -37,6 +37,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.betravelsome.travelpack.MainActivity" />
         </activity>
+        <activity
+            android:name=".EditGearActivity"
+            android:label="@string/title_activity_edit_gear"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

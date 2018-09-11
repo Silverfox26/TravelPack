@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditGearActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="?attr/actionBarSize">
+
+        <TextView
+            android:id="@+id/textViewGearNameTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ITEM NAME" />
+
+        <EditText
+            android:id="@+id/editTextGearName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textCapWords"
+            android:text="Name"
+            app:layout_constraintEnd_toEndOf="@+id/textViewGearNameTitle"
+            app:layout_constraintStart_toStartOf="@+id/textViewGearNameTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textViewGearNameTitle"
+            tools:text="Sleeping Bag" />
+
+        <TextView
+            android:id="@+id/textViewGearCategoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerGearCategory"
+            app:layout_constraintStart_toStartOf="@+id/editTextGearName"
+            app:layout_constraintTop_toTopOf="@+id/spinnerGearCategory"
+            tools:text="CATEGORY" />
+
+        <Spinner
+            android:id="@+id/spinnerGearCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/editTextGearName"
+            app:layout_constraintStart_toEndOf="@+id/textViewGearCategoryTitle"
+            app:layout_constraintTop_toBottomOf="@+id/editTextGearName" />
+
+        <TextView
+            android:id="@+id/textViewWeightTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editTextWeight"
+            app:layout_constraintStart_toStartOf="@+id/textViewGearCategoryTitle"
+            tools:text="WEIGHT" />
+
+        <EditText
+            android:id="@+id/editTextWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:text="Name"
+            android:textAlignment="textEnd"
+            app:layout_constraintStart_toEndOf="@+id/textViewWeightTitle"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGearCategory"
+            tools:text="0.5" />
+
+        <TextView
+            android:id="@+id/textViewUnit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="TextView"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editTextWeight"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerGearCategory"
+            app:layout_constraintStart_toEndOf="@+id/editTextWeight"
+            tools:text="kg" />
+
+        <TextView
+            android:id="@+id/textViewImageTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="@+id/spinnerGearCategory"
+            app:layout_constraintStart_toStartOf="@+id/textViewWeightTitle"
+            app:layout_constraintTop_toBottomOf="@+id/editTextWeight"
+            tools:text="IMAGE" />
+
+        <ImageView
+            android:id="@+id/imageViewGear"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="@+id/textViewImageTitle"
+            app:layout_constraintStart_toStartOf="@+id/textViewImageTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textViewImageTitle"
+            app:srcCompat="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/buttonAddGearImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewGear"
+            app:layout_constraintStart_toStartOf="@+id/imageViewGear"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewGear"
+            tools:text="ADD IMAGE" />
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>
