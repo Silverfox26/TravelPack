@@ -44,6 +44,10 @@
         <activity
             android:name=".CategoriesListActivity"
             android:label="@string/title_activity_categories"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditTripActivity"
+            android:label="@string/title_activity_edit_trip"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditGearActivity">
+    tools:context=".EditTripActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -25,12 +25,13 @@
         android:layout_height="wrap_content"
         android:paddingTop="?attr/actionBarSize">
 
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textViewGearNameTitle"
+                android:id="@+id/textViewTripNameTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -40,73 +41,62 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="ITEM NAME" />
+                tools:text="TRIP NAME" />
 
             <EditText
-                android:id="@+id/editTextGearName"
+                android:id="@+id/editTextTripName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textCapWords"
+                android:inputType="textPersonName"
                 android:text="Name"
-                app:layout_constraintEnd_toEndOf="@+id/textViewGearNameTitle"
-                app:layout_constraintStart_toStartOf="@+id/textViewGearNameTitle"
-                app:layout_constraintTop_toBottomOf="@+id/textViewGearNameTitle"
-                tools:text="Sleeping Bag" />
+                app:layout_constraintEnd_toEndOf="@+id/textViewTripNameTitle"
+                app:layout_constraintStart_toStartOf="@+id/textViewTripNameTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTripNameTitle"
+                tools:text="South America" />
 
             <TextView
-                android:id="@+id/textViewGearCategoryTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="@+id/spinnerGearCategory"
-                app:layout_constraintStart_toStartOf="@+id/editTextGearName"
-                app:layout_constraintTop_toTopOf="@+id/spinnerGearCategory"
-                tools:text="CATEGORY" />
-
-            <Spinner
-                android:id="@+id/spinnerGearCategory"
+                android:id="@+id/textViewDestinationTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/editTextGearName"
-                app:layout_constraintStart_toEndOf="@+id/textViewGearCategoryTitle"
-                app:layout_constraintTop_toBottomOf="@+id/editTextGearName" />
-
-            <TextView
-                android:id="@+id/textViewWeightTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="TextView"
-                app:layout_constraintBaseline_toBaselineOf="@+id/editTextWeight"
-                app:layout_constraintStart_toStartOf="@+id/textViewGearCategoryTitle"
-                tools:text="WEIGHT" />
+                app:layout_constraintEnd_toEndOf="@+id/editTextTripName"
+                app:layout_constraintStart_toStartOf="@+id/editTextTripName"
+                app:layout_constraintTop_toBottomOf="@+id/editTextTripName"
+                tools:text="DESTINATION" />
 
             <EditText
-                android:id="@+id/editTextWeight"
+                android:id="@+id/editTextDestination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:ems="10"
-                android:inputType="numberDecimal"
+                android:inputType="textPersonName"
                 android:text="Name"
-                android:textAlignment="textEnd"
-                app:layout_constraintStart_toEndOf="@+id/textViewWeightTitle"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerGearCategory"
-                tools:text="0.5" />
+                app:layout_constraintBottom_toBottomOf="@+id/buttonChooseDestination"
+                app:layout_constraintStart_toStartOf="@+id/textViewDestinationTitle"
+                app:layout_constraintTop_toTopOf="@+id/buttonChooseDestination" />
 
-            <TextView
-                android:id="@+id/textViewUnit"
+            <Button
+                android:id="@+id/buttonChooseDestination"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="TextView"
-                app:layout_constraintBaseline_toBaselineOf="@+id/editTextWeight"
-                app:layout_constraintEnd_toEndOf="@+id/spinnerGearCategory"
-                app:layout_constraintStart_toEndOf="@+id/editTextWeight"
-                tools:text="kg" />
+                android:text="Button"
+                app:layout_constraintEnd_toEndOf="@+id/textViewDestinationTitle"
+                app:layout_constraintStart_toEndOf="@+id/editTextDestination"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDestinationTitle"
+                tools:text="Choose Destination" />
+
+            <ImageView
+                android:id="@+id/imageViewMap"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/buttonChooseDestination"
+                app:layout_constraintStart_toStartOf="@+id/editTextDestination"
+                app:layout_constraintTop_toBottomOf="@+id/buttonChooseDestination"
+                app:srcCompat="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/textViewImageTitle"
@@ -114,36 +104,35 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
-                app:layout_constraintEnd_toEndOf="@+id/spinnerGearCategory"
-                app:layout_constraintStart_toStartOf="@+id/textViewWeightTitle"
-                app:layout_constraintTop_toBottomOf="@+id/editTextWeight"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewMap"
+                app:layout_constraintStart_toStartOf="@+id/imageViewMap"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewMap"
                 tools:text="IMAGE" />
 
             <ImageView
-                android:id="@+id/imageViewGear"
+                android:id="@+id/imageViewTrip"
                 android:layout_width="0dp"
-                android:layout_height="250dp"
+                android:layout_height="150dp"
                 android:layout_marginTop="8dp"
-                android:adjustViewBounds="true"
                 app:layout_constraintEnd_toEndOf="@+id/textViewImageTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewImageTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textViewImageTitle"
                 app:srcCompat="@color/colorPrimary" />
 
             <Button
-                android:id="@+id/buttonAddGearImage"
+                android:id="@+id/buttonChooseTripImage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Button"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewGear"
-                app:layout_constraintStart_toStartOf="@+id/imageViewGear"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewGear"
-                tools:text="ADD IMAGE" />
+                app:layout_constraintEnd_toEndOf="@+id/imageViewTrip"
+                app:layout_constraintStart_toStartOf="@+id/imageViewTrip"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewTrip"
+                tools:text="CHOOSE IMAGE" />
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
-
 
 </android.support.design.widget.CoordinatorLayout>

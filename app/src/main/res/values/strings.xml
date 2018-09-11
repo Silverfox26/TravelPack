@@ -5,4 +5,5 @@
     <string name="title_activity_gear_list">GearListActivity</string>
     <string name="title_activity_edit_gear">EditGearActivity</string>
     <string name="title_activity_categories">CategoriesActivity</string>
+    <string name="title_activity_edit_trip">EditTripActivity</string>
 </resources>
