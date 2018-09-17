@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.android.gms.location.places.Place;
+
 @Entity(tableName = "trip_table")
 public class Trip {
 
@@ -12,27 +14,23 @@ public class Trip {
 
     @ColumnInfo(name = "trip_name")
     private String tripName;
-    @ColumnInfo(name = "destination_name")
-    private String destinationName;
-    @ColumnInfo(name = "destination_id")
-    private String destinationId;
+    @ColumnInfo(name = "trip_place")
+    private Place tripPlace;
     @ColumnInfo(name = "image_path")
     private String imagePath;
 
     /**
-     * Trip constructor.
+     * Trip constructor
      *
-     * @param id                Unique database Id of the trip.
-     * @param tripName          Name of the trip.
-     * @param destinationName   Google Maps name of the destination of the trip.
-     * @param destinationId     Google Places Id for the destination of the trip.
-     * @param imagePath         Path to the trip's image.
+     * @param id
+     * @param tripName
+     * @param tripPlace
+     * @param imagePath
      */
-    public Trip(int id, String tripName, String destinationName, String destinationId, String imagePath) {
+    public Trip(int id, String tripName, Place tripPlace, String imagePath) {
         this.id = id;
         this.tripName = tripName;
-        this.destinationName = destinationName;
-        this.destinationId = destinationId;
+        this.tripPlace = tripPlace;
         this.imagePath = imagePath;
     }
 
@@ -52,20 +50,12 @@ public class Trip {
         this.tripName = tripName;
     }
 
-    public String getDestinationName() {
-        return destinationName;
+    public Place getTripPlace() {
+        return tripPlace;
     }
 
-    public void setDestinationName(String destinationName) {
-        this.destinationName = destinationName;
-    }
-
-    public String getDestinationId() {
-        return destinationId;
-    }
-
-    public void setDestinationId(String destinationId) {
-        this.destinationId = destinationId;
+    public void setTripPlace(Place tripPlace) {
+        this.tripPlace = tripPlace;
     }
 
     public String getImagePath() {
