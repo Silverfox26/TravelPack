@@ -3,10 +3,13 @@ package com.betravelsome.travelpack.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 
+import com.betravelsome.travelpack.data.Converters;
 import com.google.android.gms.location.places.Place;
 
 @Entity(tableName = "trip_table")
+@TypeConverters({Converters.class})
 public class Trip {
 
     @PrimaryKey(autoGenerate = true)

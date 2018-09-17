@@ -1,4 +1,4 @@
-package com.betravelsome.travelpack.model;
+package com.betravelsome.travelpack.data;
 
 import android.arch.persistence.room.TypeConverter;
 
