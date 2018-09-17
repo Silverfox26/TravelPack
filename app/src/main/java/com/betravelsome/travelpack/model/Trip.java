@@ -2,6 +2,7 @@ package com.betravelsome.travelpack.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
@@ -32,6 +33,20 @@ public class Trip {
      */
     public Trip(int id, String tripName, Place tripPlace, String imagePath) {
         this.id = id;
+        this.tripName = tripName;
+        this.tripPlace = tripPlace;
+        this.imagePath = imagePath;
+    }
+
+    /**
+     * Trip constructor
+     *
+     * @param tripName
+     * @param tripPlace
+     * @param imagePath
+     */
+    @Ignore
+    public Trip(String tripName, Place tripPlace, String imagePath) {
         this.tripName = tripName;
         this.tripPlace = tripPlace;
         this.imagePath = imagePath;
