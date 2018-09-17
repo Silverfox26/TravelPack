@@ -37,7 +37,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:text="TRIP NAME"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:text="DESTINATION"
                 app:layout_constraintEnd_toEndOf="@+id/editTextTripName"
                 app:layout_constraintStart_toStartOf="@+id/editTextTripName"
                 app:layout_constraintTop_toBottomOf="@+id/editTextTripName"
@@ -71,8 +71,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="none"
-                android:text="Name"
                 app:layout_constraintBottom_toBottomOf="@+id/buttonChooseDestination"
                 app:layout_constraintStart_toStartOf="@+id/textViewDestinationTitle"
                 app:layout_constraintTop_toTopOf="@+id/buttonChooseDestination" />
@@ -89,25 +89,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewDestinationTitle"
                 tools:text="Pick Destination" />
 
-            <ImageView
-                android:id="@+id/imageViewMap"
+            <fragment
+                android:id="@+id/mapView"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="8dp"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
                 app:layout_constraintEnd_toEndOf="@+id/buttonChooseDestination"
                 app:layout_constraintStart_toStartOf="@+id/editTextDestination"
-                app:layout_constraintTop_toBottomOf="@+id/buttonChooseDestination"
-                app:srcCompat="@color/colorPrimary" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonChooseDestination" />
 
             <TextView
                 android:id="@+id/textViewImageTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
-                app:layout_constraintEnd_toEndOf="@+id/imageViewMap"
-                app:layout_constraintStart_toStartOf="@+id/imageViewMap"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewMap"
+                android:text="IMAGE"
+                app:layout_constraintEnd_toEndOf="@+id/mapView"
+                app:layout_constraintStart_toStartOf="@+id/mapView"
+                app:layout_constraintTop_toBottomOf="@+id/mapView"
                 tools:text="IMAGE" />
 
             <ImageView
@@ -126,12 +126,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Button"
+                android:text="PICK IMAGE"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/imageViewTrip"
                 app:layout_constraintStart_toStartOf="@+id/imageViewTrip"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewTrip"
-                tools:text="CHOOSE IMAGE" />
+                tools:text="PICK IMAGE" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

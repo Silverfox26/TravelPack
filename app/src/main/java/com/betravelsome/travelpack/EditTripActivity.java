@@ -12,10 +12,18 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
 
-public class EditTripActivity extends AppCompatActivity {
+public class EditTripActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     int PLACE_PICKER_REQUEST = 1;
+
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +32,9 @@ public class EditTripActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapView);
+        mapFragment.getMapAsync(this);
     }
 
     /**
@@ -53,12 +64,18 @@ public class EditTripActivity extends AppCompatActivity {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 EditText destinationEditText = findViewById(R.id.editTextDestination);
+                
                 Place place = PlacePicker.getPlace(this, data);
                 destinationEditText.setText(place.getName());
 
-                String toastMsg = String.format("Place Id: %s", place.getId());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(place.getViewport(), 0));
             }
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.getUiSettings().setAllGesturesEnabled(false);
     }
 }
