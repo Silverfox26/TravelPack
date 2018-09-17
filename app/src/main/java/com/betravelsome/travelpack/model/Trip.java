@@ -12,6 +12,8 @@ public class Trip {
 
     @ColumnInfo(name = "trip_name")
     private String tripName;
+    @ColumnInfo(name = "destination_name")
+    private String destinationName;
     @ColumnInfo(name = "destination_id")
     private String destinationId;
     @ColumnInfo(name = "image_path")
@@ -20,14 +22,16 @@ public class Trip {
     /**
      * Trip constructor.
      *
-     * @param id            Unique database Id of the trip.
-     * @param tripName      Name of the trip.
-     * @param destinationId Google Places Id for the destination of the trip.
-     * @param imagePath     Path to the trip's image.
+     * @param id                Unique database Id of the trip.
+     * @param tripName          Name of the trip.
+     * @param destinationName   Google Maps name of the destination of the trip.
+     * @param destinationId     Google Places Id for the destination of the trip.
+     * @param imagePath         Path to the trip's image.
      */
-    public Trip(int id, String tripName, String destinationId, String imagePath) {
+    public Trip(int id, String tripName, String destinationName, String destinationId, String imagePath) {
         this.id = id;
         this.tripName = tripName;
+        this.destinationName = destinationName;
         this.destinationId = destinationId;
         this.imagePath = imagePath;
     }
@@ -46,6 +50,14 @@ public class Trip {
 
     public void setTripName(String tripName) {
         this.tripName = tripName;
+    }
+
+    public String getDestinationName() {
+        return destinationName;
+    }
+
+    public void setDestinationName(String destinationName) {
+        this.destinationName = destinationName;
     }
 
     public String getDestinationId() {
