@@ -5,9 +5,11 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.Trip;
+import com.betravelsome.travelpack.model.TripItemJoin;
 
-@Database(entities = {Trip.class}, version = 1, exportSchema = false)
+@Database(entities = {Trip.class, Item.class, TripItemJoin.class}, version = 1, exportSchema = false)
 public abstract class TravelPackRoomDatabase extends RoomDatabase {
 
     // Using the Singleton Pattern to make sure that only one instance of the database can
