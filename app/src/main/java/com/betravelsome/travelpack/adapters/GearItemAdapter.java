@@ -97,7 +97,7 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
             super(itemView);
             mGearItemName = itemView.findViewById(R.id.textViewGearName);
             mGearItemImage = itemView.findViewById(R.id.imageViewGear);
-            mGearItemWeight = itemView.findViewById(R.id.textViewGearWeight);
+            mGearItemWeight = itemView.findViewById(R.id.textViewGearItemWeight);
             itemView.setOnClickListener(this);
         }
 

@@ -75,7 +75,7 @@ public class EditGearActivity extends AppCompatActivity {
         if (requestCode == IMAGE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Image Request Ok", Toast.LENGTH_SHORT).show();
-                ImageView imageView = findViewById(R.id.imageViewTrip);
+                ImageView imageView = findViewById(R.id.imageViewGear);
                 mImagePath = Objects.requireNonNull(data.getData()).toString();
                 Glide.with(this).load(data.getData()).into(imageView);
             }
