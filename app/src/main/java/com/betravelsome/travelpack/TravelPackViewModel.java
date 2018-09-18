@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
 import com.betravelsome.travelpack.data.TravelPackRepository;
+import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.Trip;
 
 import java.util.List;
@@ -14,10 +15,17 @@ public class TravelPackViewModel extends AndroidViewModel {
     // Member variable declarations
     private final TravelPackRepository mRepository;
     private LiveData<List<Trip>> mTrips;
+    private LiveData<List<Item>> mItems;
+    private LiveData<List<Item>> mTripItems = null;
 
     public TravelPackViewModel(Application application) {
         super(application);
         mRepository = new TravelPackRepository(application);
+    }
+
+    public TravelPackViewModel(Application application, int tripId) {
+        super(application);
+        mRepository = new TravelPackRepository(application, tripId);
     }
 
     public LiveData<List<Trip>> getAllTrips() {
@@ -28,4 +36,23 @@ public class TravelPackViewModel extends AndroidViewModel {
     public void insertTrip(Trip trip) {
         mRepository.insertTrip(trip);
     }
+
+    public LiveData<List<Item>> getAllItems() {
+        mItems = mRepository.getAllItems();
+        return mItems;
+    }
+
+    public void insertItem(Item item) {
+        mRepository.insertItem(item);
+    }
+
+    public LiveData<List<Item>> getAllItemsForTrip() {
+        mItems = mRepository.getAllItemsForTrip();
+        return mItems;
+    }
+
+    public void insertTripItemJoin(int tripId, int itemId) {
+        mRepository.insertTripItemJoin(tripId, itemId);
+    }
+
 }
