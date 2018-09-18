@@ -15,8 +15,8 @@ public class Trip {
     private String tripName;
     @ColumnInfo(name = "trip_place_id")
     private String tripPlaceId;
-    @ColumnInfo(name = "image_path")
-    private String imagePath;
+    @ColumnInfo(name = "trip_image_path")
+    private String tripImagePath;
 
     /**
      * Trip constructor
@@ -24,13 +24,13 @@ public class Trip {
      * @param id
      * @param tripName
      * @param tripPlaceId
-     * @param imagePath
+     * @param tripImagePath
      */
-    public Trip(int id, String tripName, String tripPlaceId, String imagePath) {
+    public Trip(int id, String tripName, String tripPlaceId, String tripImagePath) {
         this.id = id;
         this.tripName = tripName;
         this.tripPlaceId = tripPlaceId;
-        this.imagePath = imagePath;
+        this.tripImagePath = tripImagePath;
     }
 
     /**
@@ -38,13 +38,13 @@ public class Trip {
      *
      * @param tripName
      * @param tripPlaceId
-     * @param imagePath
+     * @param tripImagePath
      */
     @Ignore
-    public Trip(String tripName, String tripPlaceId, String imagePath) {
+    public Trip(String tripName, String tripPlaceId, String tripImagePath) {
         this.tripName = tripName;
         this.tripPlaceId = tripPlaceId;
-        this.imagePath = imagePath;
+        this.tripImagePath = tripImagePath;
     }
 
     public int getId() {
@@ -71,11 +71,11 @@ public class Trip {
         this.tripPlaceId = tripPlaceId;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getTripImagePath() {
+        return tripImagePath;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setTripImagePath(String tripImagePath) {
+        this.tripImagePath = tripImagePath;
     }
 }

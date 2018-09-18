@@ -53,7 +53,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
 
         String tripName = mTripData.get(position).getTripName();
-        String tripImagePath = mTripData.get(position).getImagePath();
+        String tripImagePath = mTripData.get(position).getTripImagePath();
 
         holder.mTripName.setText(tripName);
 
