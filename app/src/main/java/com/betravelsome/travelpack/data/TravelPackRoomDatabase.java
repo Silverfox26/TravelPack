@@ -30,4 +30,6 @@ public abstract class TravelPackRoomDatabase extends RoomDatabase {
 
     // Abstract getter method for the TravelPackDao
     public abstract TravelPackDao travelPackDao();
+    public abstract ItemDao ItemDao();
+    public abstract TripItemJoinDao tripItemJoinDao();
 }
