@@ -43,7 +43,7 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
 
     private EditText mTripName;
     private String mImagePath = null;
-    private Place mPlace = null;
+    private String mPlaceId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,10 +103,11 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
             if (resultCode == RESULT_OK) {
                 EditText destinationEditText = findViewById(R.id.editTextDestination);
 
-                mPlace = PlacePicker.getPlace(this, data);
-                destinationEditText.setText(mPlace.getName());
+                Place place = PlacePicker.getPlace(this, data);
+                mPlaceId = place.getId();
+                destinationEditText.setText(place.getName());
 
-                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mPlace.getViewport(), 0));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(place.getViewport(), 0));
             }
         } else if (requestCode == IMAGE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
@@ -142,7 +143,7 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
         if (id == R.id.action_save_trip) {
             String tripName = mTripName.getText().toString();
 
-            Trip trip = new Trip(tripName, mPlace, mImagePath);
+            Trip trip = new Trip(tripName, mPlaceId, mImagePath);
 
             AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertTrip(trip));
 

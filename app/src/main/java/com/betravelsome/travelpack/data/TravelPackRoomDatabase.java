@@ -28,6 +28,6 @@ public abstract class TravelPackRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    // Abstract getter method for the MovieDao
+    // Abstract getter method for the TravelPackDao
     public abstract TravelPackDao travelPackDao();
 }

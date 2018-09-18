@@ -4,13 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-
-import com.betravelsome.travelpack.data.Converters;
-import com.google.android.gms.location.places.Place;
 
 @Entity(tableName = "trip_table")
-@TypeConverters({Converters.class})
 public class Trip {
 
     @PrimaryKey(autoGenerate = true)
@@ -18,8 +13,8 @@ public class Trip {
 
     @ColumnInfo(name = "trip_name")
     private String tripName;
-    @ColumnInfo(name = "trip_place")
-    private Place tripPlace;
+    @ColumnInfo(name = "trip_place_id")
+    private String tripPlaceId;
     @ColumnInfo(name = "image_path")
     private String imagePath;
 
@@ -28,13 +23,13 @@ public class Trip {
      *
      * @param id
      * @param tripName
-     * @param tripPlace
+     * @param tripPlaceId
      * @param imagePath
      */
-    public Trip(int id, String tripName, Place tripPlace, String imagePath) {
+    public Trip(int id, String tripName, String tripPlaceId, String imagePath) {
         this.id = id;
         this.tripName = tripName;
-        this.tripPlace = tripPlace;
+        this.tripPlaceId = tripPlaceId;
         this.imagePath = imagePath;
     }
 
@@ -42,13 +37,13 @@ public class Trip {
      * Trip constructor
      *
      * @param tripName
-     * @param tripPlace
+     * @param tripPlaceId
      * @param imagePath
      */
     @Ignore
-    public Trip(String tripName, Place tripPlace, String imagePath) {
+    public Trip(String tripName, String tripPlaceId, String imagePath) {
         this.tripName = tripName;
-        this.tripPlace = tripPlace;
+        this.tripPlaceId = tripPlaceId;
         this.imagePath = imagePath;
     }
 
@@ -68,12 +63,12 @@ public class Trip {
         this.tripName = tripName;
     }
 
-    public Place getTripPlace() {
-        return tripPlace;
+    public String getTripPlaceId() {
+        return tripPlaceId;
     }
 
-    public void setTripPlace(Place tripPlace) {
-        this.tripPlace = tripPlace;
+    public void setTripPlace(String tripPlaceId) {
+        this.tripPlaceId = tripPlaceId;
     }
 
     public String getImagePath() {
