@@ -114,7 +114,10 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
 
     @Override
     public void onClick(View v, int clickedTripId) {
-
+        // Start Packing List Activity for the selected Trip
+        Intent packingListIntend = new Intent(MainActivity.this, PackingListActivity.class);
+        packingListIntend.putExtra("TRIP_ID_EXTRA", clickedTripId);
+        startActivity(packingListIntend);
     }
 
     public boolean checkPermissionForReadExternalStorage() {

@@ -17,22 +17,9 @@ public class TravelPackRepository {
     private final TripItemJoinDao mTripItemJoinDao;
     private final LiveData<List<Trip>> mTrips;
     private final LiveData<List<Item>> mItems;
-    private final LiveData<List<Item>> mTripItems;
+    private  LiveData<List<Item>> mTripItems;
 
     public TravelPackRepository(Application application) {
-        TravelPackRoomDatabase db = TravelPackRoomDatabase.getDatabase(application);
-        mTravelPackDao = db.travelPackDao();
-        mItemDao = db.ItemDao();
-        // TODO Might be a problem???
-        mTripItemJoinDao = null;
-
-        mTrips = mTravelPackDao.getAllTrips();
-        mItems = mItemDao.getAllItems();
-        // TODO Might be a problem???
-        mTripItems = null;
-    }
-
-    public TravelPackRepository(Application application, int tripId) {
         TravelPackRoomDatabase db = TravelPackRoomDatabase.getDatabase(application);
         mTravelPackDao = db.travelPackDao();
         mItemDao = db.ItemDao();
@@ -40,8 +27,20 @@ public class TravelPackRepository {
 
         mTrips = mTravelPackDao.getAllTrips();
         mItems = mItemDao.getAllItems();
-        mTripItems = mTripItemJoinDao.getItemsForTrip(tripId);
+        // TODO Might be a problem???
+        mTripItems = null;
     }
+
+//    public TravelPackRepository(Application application, int tripId) {
+//        TravelPackRoomDatabase db = TravelPackRoomDatabase.getDatabase(application);
+//        mTravelPackDao = db.travelPackDao();
+//        mItemDao = db.ItemDao();
+//        mTripItemJoinDao = db.tripItemJoinDao();
+//
+//        mTrips = mTravelPackDao.getAllTrips();
+//        mItems = mItemDao.getAllItems();
+//        mTripItems = mTripItemJoinDao.getItemsForTrip(tripId);
+//    }
 
     // Wrapper to get the list of all trips.
     // Room executes all queries on a separate thread.
@@ -66,7 +65,8 @@ public class TravelPackRepository {
     }
 
     // Wrapper to get the list of all items for a trip.
-    public LiveData<List<Item>> getAllItemsForTrip() {
+    public LiveData<List<Item>> getAllItemsForTrip(int tripId) {
+        mTripItems = mTripItemJoinDao.getItemsForTrip(tripId);
         return mTripItems;
     }
 

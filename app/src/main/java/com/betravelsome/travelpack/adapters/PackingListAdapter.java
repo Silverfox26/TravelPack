@@ -12,34 +12,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.betravelsome.travelpack.R;
+import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.Trip;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.location.places.Place;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
+public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.PackingListViewHolder> {
 
-    // Cached copy of Trips
-    private List<Trip> mTripData;
+    // Cached copy of Packing List Items
+    private List<Item> mPackingListData;
 
     // On-click handler to make it easy for an Activity to interface with the RecyclerView
-    private final TripAdapterOnClickHandler mClickHandler;
+    private final PackingListAdapter.PackingListAdapterOnClickHandler mClickHandler;
 
     private final Context mContext;
 
     /**
-     * Creates a TripAdapter.
+     * Creates a PackingListAdapter.
      */
-    public TripAdapter(TripAdapterOnClickHandler clickHandler, Context context) {
+    public PackingListAdapter(PackingListAdapter.PackingListAdapterOnClickHandler clickHandler, Context context) {
         this.mClickHandler = clickHandler;
         this.mContext = context;
     }
 
-    public interface TripAdapterOnClickHandler {
-        void onClick(View v, int clickedTripId);
+    public interface PackingListAdapterOnClickHandler {
+        void onClick(View v, int clickedPackingListItemId);
     }
 
     /**
@@ -50,17 +48,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PackingListAdapter.PackingListViewHolder holder, int position) {
 
-        String tripName = mTripData.get(position).getTripName();
-        String tripImagePath = mTripData.get(position).getTripImagePath();
+        String gearItemName = mPackingListData.get(position).getItemName();
+        Float gearItemWeight = mPackingListData.get(position).getItemWeight();
+        String gearItemImagePath = mPackingListData.get(position).getItemImagePath();
 
-        holder.mTripName.setText(tripName);
+        holder.mGearItemName.setText(gearItemName);
+        holder.mGearItemWeight.setText(gearItemWeight.toString());
 
         // Create the image URI and display it using Glide
         Uri uri;
-        uri = Uri.parse(tripImagePath);
-        Glide.with(mContext).load(uri).into(holder.mTripImage);
+        uri = Uri.parse(gearItemImagePath);
+        Glide.with(mContext).load(uri).into(holder.mGearItemImage);
     }
 
     /**
@@ -74,26 +74,28 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
      */
     @NonNull
     @Override
-    public TripViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PackingListAdapter.PackingListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        int layoutIdForListItem = R.layout.activity_main_list_item;
+        int layoutIdForListItem = R.layout.activity_packing_list_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(layoutIdForListItem, parent, false);
-        return new TripViewHolder(view);
+        return new PackingListAdapter.PackingListViewHolder(view);
     }
 
     /**
-     * Cache of the children views for a trip list item.
+     * Cache of the children views for a packing list item.
      */
-    public class TripViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView mTripName;
-        final ImageView mTripImage;
+    public class PackingListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final TextView mGearItemName;
+        final TextView mGearItemWeight;
+        final ImageView mGearItemImage;
 
-        TripViewHolder(View itemView) {
+        PackingListViewHolder(View itemView) {
             super(itemView);
-            mTripName = itemView.findViewById(R.id.textViewTripName);
-            mTripImage = itemView.findViewById(R.id.imageViewTrip);
+            mGearItemName = itemView.findViewById(R.id.textViewGearName);
+            mGearItemWeight = itemView.findViewById(R.id.textViewGearWeight);
+            mGearItemImage = itemView.findViewById(R.id.imageViewGear);
             itemView.setOnClickListener(this);
         }
 
@@ -105,7 +107,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            int id = mTripData.get(adapterPosition).getId();
+            int id = mPackingListData.get(adapterPosition).getId();
             Log.d("AAA_ADAPTER", "onClick: " + id);
             mClickHandler.onClick(v, id);
 
@@ -119,19 +121,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
      */
     @Override
     public int getItemCount() {
-        if (mTripData == null) return 0;
-        return mTripData.size();
+        if (mPackingListData == null) return 0;
+        return mPackingListData.size();
     }
 
     /**
-     * Method is used to set the trip data on a TripAdapter if one is already created.
+     * Method is used to set the packing list data on a PackingListAdapter if one is already created.
      * This way new data can be loaded from the web and displayed without the need for
      * a new MovieAdapter.
      *
-     * @param tripData The new trip data to be displayed.
+     * @param itemData The new packing list data to be displayed.
      */
-    public void setTripData(List<Trip> tripData) {
-        mTripData = tripData;
+    public void setPackingListData(List<Item> itemData) {
+        mPackingListData = itemData;
         notifyDataSetChanged();
     }
 }

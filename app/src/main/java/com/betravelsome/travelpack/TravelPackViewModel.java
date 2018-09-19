@@ -23,10 +23,10 @@ public class TravelPackViewModel extends AndroidViewModel {
         mRepository = new TravelPackRepository(application);
     }
 
-    public TravelPackViewModel(Application application, int tripId) {
-        super(application);
-        mRepository = new TravelPackRepository(application, tripId);
-    }
+//    public TravelPackViewModel(Application application, int tripId) {
+//        super(application);
+//        mRepository = new TravelPackRepository(application, tripId);
+//    }
 
     public LiveData<List<Trip>> getAllTrips() {
         mTrips = mRepository.getAllTrips();
@@ -46,8 +46,8 @@ public class TravelPackViewModel extends AndroidViewModel {
         mRepository.insertItem(item);
     }
 
-    public LiveData<List<Item>> getAllItemsForTrip() {
-        mItems = mRepository.getAllItemsForTrip();
+    public LiveData<List<Item>> getAllItemsForTrip(int tripId) {
+        mItems = mRepository.getAllItemsForTrip(tripId);
         return mItems;
     }
 
