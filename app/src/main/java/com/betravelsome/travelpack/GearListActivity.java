@@ -26,6 +26,10 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
     private GearItemAdapter mItemAdapter;
     private Observer<List<Item>> mObserver;
 
+    private boolean isItemPickActivity = false;
+    private int mTripId = -1;
+    private int mClickedItemId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,14 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Get the intent, receive the tripId and set the list to pickable;
+        Intent intent = getIntent();
+        if (intent.hasExtra("TRIP_ID_EXTRA")) {
+            mTripId = intent.getIntExtra("TRIP_ID_EXTRA", -1);
+
+            isItemPickActivity = true;
+        }
 
         LinearLayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -67,6 +79,20 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
 
     @Override
     public void onClick(View v, int clickedItemId) {
+        if (isItemPickActivity) {
+            mClickedItemId = clickedItemId;
+            finish();
+        }
+    }
 
+    @Override
+    public void finish() {
+        // Prepare data intent
+        Intent data = new Intent();
+        data.putExtra("TRIP_ID_EXTRA", mTripId);
+        data.putExtra("ITEM_ID_EXTRA", mClickedItemId);
+        // Activity finished ok, return the data
+        setResult(RESULT_OK, data);
+        super.finish();
     }
 }

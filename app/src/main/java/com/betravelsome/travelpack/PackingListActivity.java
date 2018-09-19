@@ -10,22 +10,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.betravelsome.travelpack.adapters.PackingListAdapter;
 import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.utilities.AppExecutors;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdateFactory;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PackingListActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterOnClickHandler {
+
+    private static int GEAR_PICKER_REQUEST = 1;
 
     private List<Item> mItems = null;
     private TravelPackViewModel mTravelPackViewModel;
     private PackingListAdapter mPackingListAdapter;
     private Observer<List<Item>> mObserver;
+
+    private int mTripId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +51,10 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Start Pick Gear List Activity to select a gear item to be added to the packing list
+                Intent packingListIntend = new Intent(PackingListActivity.this, GearListActivity.class);
+                packingListIntend.putExtra("TRIP_ID_EXTRA", mTripId);
+                startActivityForResult(packingListIntend, GEAR_PICKER_REQUEST);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -64,14 +79,26 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         // Get the intent, check its content, and populate the UI with its data
         Intent intent = getIntent();
         if (intent.hasExtra("TRIP_ID_EXTRA")) {
-            int tripId = intent.getIntExtra("TRIP_ID_EXTRA", -1);
+            mTripId = intent.getIntExtra("TRIP_ID_EXTRA", -1);
 
-            mTravelPackViewModel.getAllItemsForTrip(tripId).observe(this, mObserver);
+            mTravelPackViewModel.getAllItemsForTrip(mTripId).observe(this, mObserver);
         }
     }
 
     @Override
     public void onClick(View v, int clickedPackingListItemId) {
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GEAR_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                int itemId = data.getIntExtra("ITEM_ID_EXTRA", -1);
+                mTripId = data.getIntExtra("TRIP_ID_EXTRA", -1);
+
+                AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertTripItemJoin(mTripId, itemId));
+            }
+        }
     }
 }
