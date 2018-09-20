@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,6 +25,7 @@ import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.model.TripItemJoin;
 import com.betravelsome.travelpack.utilities.AppExecutors;
+import com.betravelsome.travelpack.utilities.RecyclerViewItemTouchHelper;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -31,7 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import java.util.List;
 import java.util.Objects;
 
-public class PackingListActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterOnClickHandler {
+public class PackingListActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterOnClickHandler, RecyclerViewItemTouchHelper.RecyclerViewItemTouchHelperListener {
 
     private static final String TAG = "CLICK";
 
@@ -41,6 +44,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     private TravelPackViewModel mTravelPackViewModel;
     private PackingListAdapter mPackingListAdapter;
     private Observer<List<ItemPackingList>> mObserver;
+    private RecyclerView packingListRecyclerView;
 
     private int mTripId = -1;
 
@@ -65,13 +69,16 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
         LinearLayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        RecyclerView packingListRecyclerView = findViewById(R.id.recyclerViewPackingList);
+        packingListRecyclerView = findViewById(R.id.recyclerViewPackingList);
 
         // Configuring the RecyclerView and setting its adapter
         packingListRecyclerView.setLayoutManager(layoutManager);
         packingListRecyclerView.setHasFixedSize(true);
         mPackingListAdapter = new PackingListAdapter(this, this);
         packingListRecyclerView.setAdapter(mPackingListAdapter);
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerViewItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(packingListRecyclerView);
 
         // The ViewModelProvider creates the ViewModel, when the app first starts.
         // When the activity is destroyed and recreated, the Provider returns the existing ViewModel.
@@ -118,5 +125,10 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         }
     }
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        TripItemJoin itemToDelete = mPackingListAdapter.removeItem(position);
+        AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.deletePackingListItem(itemToDelete));
+    }
 
 }

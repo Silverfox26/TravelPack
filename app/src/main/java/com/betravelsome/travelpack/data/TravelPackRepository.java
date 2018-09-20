@@ -90,4 +90,9 @@ public class TravelPackRepository {
     public void updateTripItemAmount(TripItemJoin item) {
         mTripItemJoinDao.update(item);
     }
+
+    // Wrapper to a gear item from a packing list
+    public void deletePackingListItem(TripItemJoin item) {
+        mTripItemJoinDao.deletePackingListItem(item);
+    }
 }

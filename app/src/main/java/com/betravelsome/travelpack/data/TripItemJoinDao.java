@@ -2,6 +2,7 @@ package com.betravelsome.travelpack.data;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -25,4 +26,7 @@ public interface TripItemJoinDao {
 
     @Update(onConflict = OnConflictStrategy.IGNORE)
     void update(TripItemJoin tripItemJoin);
+
+    @Delete
+    void deletePackingListItem(TripItemJoin item);
 }

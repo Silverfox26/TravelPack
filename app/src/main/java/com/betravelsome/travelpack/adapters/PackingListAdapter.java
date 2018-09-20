@@ -15,6 +15,7 @@ import com.betravelsome.travelpack.R;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.Trip;
+import com.betravelsome.travelpack.model.TripItemJoin;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -184,5 +185,13 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     public void increaseItemCount(int position) {
         int itemAmount = mPackingListData.get(position).getItemAmount();
         mPackingListData.get(position).setItemAmount(itemAmount + 1);
+    }
+
+    public TripItemJoin removeItem(int position) {
+        int tripId = mPackingListData.get(position).getTripId();
+        int itemId = mPackingListData.get(position).getItemId();
+        TripItemJoin item = new TripItemJoin(tripId, itemId);
+
+        return item;
     }
 }
