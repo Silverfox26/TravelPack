@@ -85,4 +85,9 @@ public class TravelPackRepository {
     public void updateGearItem(Item item) {
         mItemDao.update(item);
     }
+
+    // Wrapper to update a gear item
+    public void updateTripItemAmount(TripItemJoin item) {
+        mTripItemJoinDao.update(item);
+    }
 }

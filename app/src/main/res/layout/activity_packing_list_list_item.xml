@@ -7,24 +7,23 @@
 
     <TextView
         android:id="@+id/textViewAmmount"
-        android:layout_width="wrap_content"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:text="TextView"
+        android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewGear"
+        app:layout_constraintBottom_toTopOf="@+id/textViewMinus"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageViewGear"
-        tools:text="2 X" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlus"
+        tools:text="2" />
 
     <ImageView
         android:id="@+id/imageViewGear"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewAmmount"
@@ -75,4 +74,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewGear"
         tools:text="1.0kg" />
+
+    <TextView
+        android:id="@+id/textViewPlus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="^"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/textViewAmmount"
+        app:layout_constraintStart_toStartOf="@+id/textViewAmmount"
+        app:layout_constraintTop_toTopOf="@+id/imageViewGear" />
+
+    <TextView
+        android:id="@+id/textViewMinus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="v"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewGear"
+        app:layout_constraintEnd_toEndOf="@+id/textViewAmmount"
+        app:layout_constraintStart_toStartOf="@+id/textViewAmmount" />
+
 </android.support.constraint.ConstraintLayout>

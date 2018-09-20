@@ -21,6 +21,7 @@ import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.Trip;
+import com.betravelsome.travelpack.model.TripItemJoin;
 import com.betravelsome.travelpack.utilities.AppExecutors;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.places.Place;
@@ -31,6 +32,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class PackingListActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterOnClickHandler {
+
+    private static final String TAG = "CLICK";
 
     private static int GEAR_PICKER_REQUEST = 1;
 
@@ -88,8 +91,20 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onClick(View v, int clickedPackingListItemId) {
-
     }
+
+    @Override
+    public void onPlusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount) {
+        TripItemJoin item = new TripItemJoin(clickedPackingListTripId, clickedPackingListItemId, clickedItemAmount + 1 );
+        AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateTripItemAmount(item));
+    }
+
+    @Override
+    public void onMinusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount) {
+        TripItemJoin item = new TripItemJoin(clickedPackingListTripId, clickedPackingListItemId, clickedItemAmount - 1 );
+        AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateTripItemAmount(item));
+    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -102,4 +117,6 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
             }
         }
     }
+
+
 }

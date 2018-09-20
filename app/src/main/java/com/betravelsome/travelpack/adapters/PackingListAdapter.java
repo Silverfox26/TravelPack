@@ -21,6 +21,8 @@ import java.util.List;
 
 public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.PackingListViewHolder> {
 
+    private final static String TAG = "CLICK";
+
     // Cached copy of Packing List Items
     private List<ItemPackingList> mPackingListData;
 
@@ -39,6 +41,10 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
     public interface PackingListAdapterOnClickHandler {
         void onClick(View v, int clickedPackingListItemId);
+
+        void onPlusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount);
+
+        void onMinusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount);
     }
 
     /**
@@ -62,6 +68,30 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
         Float gearWeightSum = gearItemAmount * gearItemWeight;
         holder.mGearWeightSum.setText(gearWeightSum.toString());
+
+        holder.mGearItemPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Plus Clicked");
+                int adapterPosition = holder.getAdapterPosition();
+                int tripId = mPackingListData.get(adapterPosition).getTripId();
+                int itemId = mPackingListData.get(adapterPosition).getItemId();
+                int itemAmount = mPackingListData.get(adapterPosition).getItemAmount();
+                mClickHandler.onPlusClicked(v, tripId, itemId, itemAmount);
+            }
+        });
+
+        holder.mGearItemMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Minus Clicked");
+                int adapterPosition = holder.getAdapterPosition();
+                int tripId = mPackingListData.get(adapterPosition).getTripId();
+                int itemId = mPackingListData.get(adapterPosition).getItemId();
+                int itemAmount = mPackingListData.get(adapterPosition).getItemAmount();
+                mClickHandler.onMinusClicked(v, tripId, itemId, itemAmount);
+            }
+        });
 
         // Create the image URI and display it using Glide
         Uri uri;
@@ -98,6 +128,8 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         final ImageView mGearItemImage;
         final TextView mGearItemAmount;
         final TextView mGearWeightSum;
+        final TextView mGearItemPlus;
+        final TextView mGearItemMinus;
 
         PackingListViewHolder(View itemView) {
             super(itemView);
@@ -106,6 +138,8 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
             mGearItemImage = itemView.findViewById(R.id.imageViewGear);
             mGearItemAmount = itemView.findViewById(R.id.textViewAmmount);
             mGearWeightSum = itemView.findViewById(R.id.textViewSumGearItemWeight);
+            mGearItemPlus = itemView.findViewById(R.id.textViewPlus);
+            mGearItemMinus = itemView.findViewById(R.id.textViewMinus);
             itemView.setOnClickListener(this);
         }
 
@@ -118,7 +152,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             int id = mPackingListData.get(adapterPosition).getId();
-            Log.d("AAA_ADAPTER", "onClick: " + id);
+            Log.d("AAA_ADAPTER", "onClick: " + id + v);
             mClickHandler.onClick(v, id);
 
         }
@@ -145,5 +179,10 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     public void setPackingListData(List<ItemPackingList> itemData) {
         mPackingListData = itemData;
         notifyDataSetChanged();
+    }
+
+    public void increaseItemCount(int position) {
+        int itemAmount = mPackingListData.get(position).getItemAmount();
+        mPackingListData.get(position).setItemAmount(itemAmount + 1);
     }
 }

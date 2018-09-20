@@ -8,6 +8,11 @@ public class ItemPackingList {
 
     @ColumnInfo(name = "id")
     private int id;
+    @ColumnInfo(name = "trip_id")
+    private int tripId;
+    @ColumnInfo(name = "item_id")
+    private int itemId;
+
 
     @ColumnInfo(name = "item_name")
     private String itemName;
@@ -19,19 +24,14 @@ public class ItemPackingList {
     @ColumnInfo(name = "item_amount")
     private int itemAmount;
 
-    /**
-     * Item Constructor
-     *
-     * @param id
-     * @param itemName
-     * @param itemWeight
-     * @param itemImagePath
-     */
-    public ItemPackingList(int id, String itemName, float itemWeight, String itemImagePath) {
+    public ItemPackingList(int id, int tripId, int itemId, String itemName, float itemWeight, String itemImagePath, int itemAmount) {
         this.id = id;
+        this.tripId = tripId;
+        this.itemId = itemId;
         this.itemName = itemName;
         this.itemWeight = itemWeight;
         this.itemImagePath = itemImagePath;
+        this.itemAmount = itemAmount;
     }
 
     public int getId() {
@@ -40,6 +40,22 @@ public class ItemPackingList {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(int tripId) {
+        this.tripId = tripId;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public String getItemName() {

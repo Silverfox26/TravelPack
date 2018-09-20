@@ -3,6 +3,7 @@ package com.betravelsome.travelpack.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 
 @Entity(tableName = "trip_item_join_table",
@@ -29,6 +30,13 @@ public class TripItemJoin {
         this.tripId = tripId;
         this.itemId = itemId;
         this.itemAmount = 1;
+    }
+
+    @Ignore
+    public TripItemJoin(final int tripId, final int itemId, final int amount) {
+        this.tripId = tripId;
+        this.itemId = itemId;
+        this.itemAmount = amount;
     }
 
     public int getTripId() {

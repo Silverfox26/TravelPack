@@ -8,6 +8,7 @@ import com.betravelsome.travelpack.data.TravelPackRepository;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.Trip;
+import com.betravelsome.travelpack.model.TripItemJoin;
 
 import java.util.List;
 
@@ -62,6 +63,10 @@ public class TravelPackViewModel extends AndroidViewModel {
 
     public void updateGearItem(Item item) {
         mRepository.updateGearItem(item);
+    }
+
+    public void updateTripItemAmount(TripItemJoin item) {
+        mRepository.updateTripItemAmount(item);
     }
 
 }
