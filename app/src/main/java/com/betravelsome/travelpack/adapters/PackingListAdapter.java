@@ -187,7 +187,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         mPackingListData.get(position).setItemAmount(itemAmount + 1);
     }
 
-    public TripItemJoin removeItem(int position) {
+    public TripItemJoin getItemByPosition(int position) {
         int tripId = mPackingListData.get(position).getTripId();
         int itemId = mPackingListData.get(position).getItemId();
         TripItemJoin item = new TripItemJoin(tripId, itemId);

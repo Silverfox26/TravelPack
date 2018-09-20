@@ -91,8 +91,13 @@ public class TravelPackRepository {
         mTripItemJoinDao.update(item);
     }
 
-    // Wrapper to a gear item from a packing list
+    // Wrapper to delete a gear item from a packing list
     public void deletePackingListItem(TripItemJoin item) {
         mTripItemJoinDao.deletePackingListItem(item);
+    }
+
+    // Wrapper to delete an item from the gear list
+    public void deleteGearItem(Item item) {
+        mItemDao.deleteItem(item);
     }
 }

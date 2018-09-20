@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.betravelsome.travelpack.R;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.Trip;
+import com.betravelsome.travelpack.model.TripItemJoin;
 import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Text;
@@ -139,5 +140,9 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
     public void setGearItemData(List<Item> itemData) {
         mItemData = itemData;
         notifyDataSetChanged();
+    }
+
+    public Item getItemByPosition(int position) {
+        return mItemData.get(position);
     }
 }

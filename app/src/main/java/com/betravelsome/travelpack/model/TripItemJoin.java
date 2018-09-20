@@ -6,6 +6,8 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 @Entity(tableName = "trip_item_join_table",
         primaryKeys = {"trip_id", "item_id"},
         foreignKeys = {
@@ -14,7 +16,8 @@ import android.arch.persistence.room.Index;
                         childColumns = "trip_id"),
             @ForeignKey(entity = Item.class,
                         parentColumns = "id",
-                        childColumns = "item_id")
+                        childColumns = "item_id",
+                        onDelete = CASCADE)
         },
         indices = {@Index("item_id")})
 public class TripItemJoin {

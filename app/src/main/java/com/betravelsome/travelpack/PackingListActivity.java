@@ -127,7 +127,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        TripItemJoin itemToDelete = mPackingListAdapter.removeItem(position);
+        TripItemJoin itemToDelete = mPackingListAdapter.getItemByPosition(position);
         AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.deletePackingListItem(itemToDelete));
     }
 

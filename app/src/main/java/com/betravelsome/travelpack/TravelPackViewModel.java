@@ -72,4 +72,8 @@ public class TravelPackViewModel extends AndroidViewModel {
     public void deletePackingListItem(TripItemJoin item) {
         mRepository.deletePackingListItem(item);
     }
+
+    public void deleteGearItem(Item item) {
+        mRepository.deleteGearItem(item);
+    }
 }

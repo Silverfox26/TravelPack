@@ -10,16 +10,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.betravelsome.travelpack.adapters.GearItemAdapter;
 import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.Trip;
+import com.betravelsome.travelpack.utilities.AppExecutors;
+import com.betravelsome.travelpack.utilities.RecyclerViewItemTouchHelper;
 
 import java.util.List;
 
-public class GearListActivity extends AppCompatActivity implements GearItemAdapter.GearItemAdapterOnClickHandler {
+public class GearListActivity extends AppCompatActivity implements GearItemAdapter.GearItemAdapterOnClickHandler, RecyclerViewItemTouchHelper.RecyclerViewItemTouchHelperListener {
 
     private List<Item> mItems = null;
     private TravelPackViewModel mTravelPackViewModel;
@@ -67,6 +70,9 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
         mItemAdapter = new GearItemAdapter(this, this);
         itemRecyclerView.setAdapter(mItemAdapter);
 
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerViewItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(itemRecyclerView);
+
         // The ViewModelProvider creates the ViewModel, when the app first starts.
         // When the activity is destroyed and recreated, the Provider returns the existing ViewModel.
         mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
@@ -99,5 +105,11 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
         // Activity finished ok, return the data
         setResult(RESULT_OK, data);
         super.finish();
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        Item itemToDelete = mItemAdapter.getItemByPosition(position);
+        AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.deleteGearItem(itemToDelete));
     }
 }
