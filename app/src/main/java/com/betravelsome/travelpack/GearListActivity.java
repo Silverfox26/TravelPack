@@ -82,6 +82,11 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
         if (isItemPickActivity) {
             mClickedItemId = clickedItemId;
             finish();
+        } else {
+            // Start Packing List Activity for the selected Trip
+            Intent editGearItemIntend = new Intent(GearListActivity.this, EditGearActivity.class);
+            editGearItemIntend.putExtra("GEAR_ITEM_ID_EXTRA", clickedItemId);
+            startActivity(editGearItemIntend);
         }
     }
 

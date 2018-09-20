@@ -55,4 +55,12 @@ public class TravelPackViewModel extends AndroidViewModel {
         mRepository.insertTripItemJoin(tripId, itemId);
     }
 
+    public Item getGearItemById(int itemId) {
+        return mRepository.getGearItemById(itemId);
+    }
+
+    public void updateGearItem(Item item) {
+        mRepository.updateGearItem(item);
+    }
+
 }

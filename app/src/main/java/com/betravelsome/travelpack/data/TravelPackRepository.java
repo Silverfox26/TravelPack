@@ -74,4 +74,14 @@ public class TravelPackRepository {
     public void insertTripItemJoin(int tripId, int itemId) {
         mTripItemJoinDao.insert(new TripItemJoin(tripId, itemId));
     }
+
+    // Wrapper to get a gear item by id
+    public Item getGearItemById(int itemId) {
+        return mItemDao.getItemById(itemId);
+    }
+
+    // Wrapper to update a gear item
+    public void updateGearItem(Item item) {
+        mItemDao.update(item);
+    }
 }

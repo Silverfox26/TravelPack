@@ -1,7 +1,10 @@
 package com.betravelsome.travelpack;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +19,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.betravelsome.travelpack.data.ItemDao;
+import com.betravelsome.travelpack.data.TravelPackRoomDatabase;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.utilities.AppExecutors;
@@ -24,6 +29,10 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 public class EditGearActivity extends AppCompatActivity {
@@ -34,7 +43,15 @@ public class EditGearActivity extends AppCompatActivity {
 
     private EditText mGearName;
     private EditText mGearWeight;
+    private ImageView mGearImage;
     private String mImagePath = null;
+    private String mName;
+    private Float mWeight;
+    private Item mGearItem = null;
+
+    private TravelPackRoomDatabase db ;
+
+    private boolean isNewGearItem = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +62,22 @@ public class EditGearActivity extends AppCompatActivity {
 
         mGearName = findViewById(R.id.editTextGearName);
         mGearWeight = findViewById(R.id.editTextWeight);
+        mGearImage = findViewById(R.id.imageViewGear);
 
         // The ViewModelProvider creates the ViewModel, when the app first starts.
         // When the activity is destroyed and recreated, the Provider returns the existing ViewModel.
         mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
+
+        // Get the intent and receive the itemId;
+        Intent intent = getIntent();
+        if (intent.hasExtra("GEAR_ITEM_ID_EXTRA")) {
+
+            isNewGearItem = false;
+            int itemId = intent.getIntExtra("GEAR_ITEM_ID_EXTRA", -1);
+
+            db = TravelPackRoomDatabase.getDatabase(this);
+            new FetchItemByIdTask(this, db).execute(itemId);
+        }
 
     }
 
@@ -75,9 +104,8 @@ public class EditGearActivity extends AppCompatActivity {
         if (requestCode == IMAGE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(this, "Image Request Ok", Toast.LENGTH_SHORT).show();
-                ImageView imageView = findViewById(R.id.imageViewGear);
                 mImagePath = Objects.requireNonNull(data.getData()).toString();
-                Glide.with(this).load(data.getData()).into(imageView);
+                Glide.with(this).load(data.getData()).into(mGearImage);
             }
         }
     }
@@ -98,18 +126,83 @@ public class EditGearActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save_gear) {
-            String gearName = mGearName.getText().toString();
-            Float gearWeight = Float.valueOf(mGearWeight.getText().toString());
 
-            Item gear = new Item(gearName, gearWeight, mImagePath);
+            mName = mGearName.getText().toString();
+            mWeight = Float.valueOf(mGearWeight.getText().toString());
 
-            AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertItem(gear));
+            if (isNewGearItem) {
+                mGearItem = new Item(mName, mWeight, mImagePath);
 
-            // TODO Show confirmation that Trip was saved. And then exit to main activity
-            return true;
+                AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertItem(mGearItem));
+
+                // TODO Show confirmation that Trip was saved. And then exit to main activity
+                return true;
+            } else {
+                mGearItem.setItemName(mName);
+                mGearItem.setItemWeight(mWeight);
+                mGearItem.setItemImagePath(mImagePath);
+
+                AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateGearItem(mGearItem));
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * AsyncTask to fetch an item by id from the travel pack db.
+     */
+    private static class FetchItemByIdTask extends AsyncTask<Integer, Void, Item> {
+
+        private final WeakReference<EditGearActivity> activityReference;
+        private final TravelPackRoomDatabase mDb;
+
+        FetchItemByIdTask(EditGearActivity context,  TravelPackRoomDatabase db) {
+            // only retain a weak reference to the activity
+            activityReference = new WeakReference<>(context);
+            mDb = db;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // get a reference to the activity if it is still there
+            EditGearActivity activity = activityReference.get();
+            if (activity == null || activity.isFinishing()) return;
+        }
+
+        @Override
+        protected Item doInBackground(Integer... ints) {
+            // get a reference to the activity if it is still there
+            EditGearActivity activity = activityReference.get();
+            if (activity == null || activity.isFinishing()) return null;
+
+            int itemId = ints[0];
+            Item itemResult;
+
+            itemResult = mDb.ItemDao().getItemById(itemId);
+
+            return itemResult;
+        }
+
+        @Override
+        protected void onPostExecute(Item item) {
+            // get a reference to the activity if it is still there
+            EditGearActivity activity = activityReference.get();
+            if (activity == null || activity.isFinishing()) return;
+
+            if (item != null) {
+                activity.mGearItem = item;
+
+                activity.mGearName.setText(activity.mGearItem.getItemName());
+                activity.mGearWeight.setText(String.valueOf(activity.mGearItem.getItemWeight()));
+
+                activity.mImagePath = activity.mGearItem.getItemImagePath();
+                Glide.with(activity).load(activity.mImagePath).into(activity.mGearImage);
+            } else {
+//                activity.showErrorMessage();
+            }
+        }
     }
 
 }

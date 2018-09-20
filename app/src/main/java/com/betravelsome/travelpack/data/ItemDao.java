@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.betravelsome.travelpack.model.Item;
 
@@ -16,6 +17,12 @@ public interface ItemDao {
     @Query("SELECT * from item_table ORDER BY item_name")
     LiveData<List<Item>> getAllItems();
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Query("SELECT * from item_table WHERE id = :id")
+    Item getItemById(int id);
+
+    @Update()
+    void update(Item item);
+
+    @Insert()
     void insertItem(Item item);
 }
