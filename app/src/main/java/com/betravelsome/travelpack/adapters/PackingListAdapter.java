@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.betravelsome.travelpack.R;
 import com.betravelsome.travelpack.model.Item;
+import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.Trip;
 import com.bumptech.glide.Glide;
 
@@ -21,7 +22,7 @@ import java.util.List;
 public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.PackingListViewHolder> {
 
     // Cached copy of Packing List Items
-    private List<Item> mPackingListData;
+    private List<ItemPackingList> mPackingListData;
 
     // On-click handler to make it easy for an Activity to interface with the RecyclerView
     private final PackingListAdapter.PackingListAdapterOnClickHandler mClickHandler;
@@ -53,9 +54,14 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         String gearItemName = mPackingListData.get(position).getItemName();
         Float gearItemWeight = mPackingListData.get(position).getItemWeight();
         String gearItemImagePath = mPackingListData.get(position).getItemImagePath();
+        Integer gearItemAmount = mPackingListData.get(position).getItemAmount();
 
         holder.mGearItemName.setText(gearItemName);
         holder.mGearItemWeight.setText(gearItemWeight.toString());
+        holder.mGearItemAmount.setText(String.valueOf(gearItemAmount));
+
+        Float gearWeightSum = gearItemAmount * gearItemWeight;
+        holder.mGearWeightSum.setText(gearWeightSum.toString());
 
         // Create the image URI and display it using Glide
         Uri uri;
@@ -90,12 +96,16 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         final TextView mGearItemName;
         final TextView mGearItemWeight;
         final ImageView mGearItemImage;
+        final TextView mGearItemAmount;
+        final TextView mGearWeightSum;
 
         PackingListViewHolder(View itemView) {
             super(itemView);
             mGearItemName = itemView.findViewById(R.id.textViewGearName);
             mGearItemWeight = itemView.findViewById(R.id.textViewGearWeight);
             mGearItemImage = itemView.findViewById(R.id.imageViewGear);
+            mGearItemAmount = itemView.findViewById(R.id.textViewAmmount);
+            mGearWeightSum = itemView.findViewById(R.id.textViewSumGearItemWeight);
             itemView.setOnClickListener(this);
         }
 
@@ -132,7 +142,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
      *
      * @param itemData The new packing list data to be displayed.
      */
-    public void setPackingListData(List<Item> itemData) {
+    public void setPackingListData(List<ItemPackingList> itemData) {
         mPackingListData = itemData;
         notifyDataSetChanged();
     }

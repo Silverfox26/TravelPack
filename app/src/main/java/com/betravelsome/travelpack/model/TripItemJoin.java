@@ -22,10 +22,13 @@ public class TripItemJoin {
     private final int tripId;
     @ColumnInfo(name = "item_id")
     private final int itemId;
+    @ColumnInfo(name = "item_amount")
+    private int itemAmount;
 
     public TripItemJoin(final int tripId, final int itemId) {
         this.tripId = tripId;
         this.itemId = itemId;
+        this.itemAmount = 1;
     }
 
     public int getTripId() {
@@ -34,5 +37,13 @@ public class TripItemJoin {
 
     public int getItemId() {
         return itemId;
+    }
+
+    public int getItemAmount() {
+        return itemAmount;
+    }
+
+    public void setItemAmount(int itemAmount) {
+        this.itemAmount = itemAmount;
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 
 import com.betravelsome.travelpack.model.Item;
+import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.model.TripItemJoin;
 
@@ -17,7 +18,7 @@ public class TravelPackRepository {
     private final TripItemJoinDao mTripItemJoinDao;
     private final LiveData<List<Trip>> mTrips;
     private final LiveData<List<Item>> mItems;
-    private  LiveData<List<Item>> mTripItems;
+    private  LiveData<List<ItemPackingList>> mTripItems;
 
     public TravelPackRepository(Application application) {
         TravelPackRoomDatabase db = TravelPackRoomDatabase.getDatabase(application);
@@ -65,7 +66,7 @@ public class TravelPackRepository {
     }
 
     // Wrapper to get the list of all items for a trip.
-    public LiveData<List<Item>> getAllItemsForTrip(int tripId) {
+    public LiveData<List<ItemPackingList>> getAllItemsForTrip(int tripId) {
         mTripItems = mTripItemJoinDao.getItemsForTrip(tripId);
         return mTripItems;
     }

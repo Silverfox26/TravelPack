@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.betravelsome.travelpack.adapters.PackingListAdapter;
 import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.model.Item;
+import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.utilities.AppExecutors;
 import com.bumptech.glide.Glide;
@@ -36,7 +37,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     private List<Item> mItems = null;
     private TravelPackViewModel mTravelPackViewModel;
     private PackingListAdapter mPackingListAdapter;
-    private Observer<List<Item>> mObserver;
+    private Observer<List<ItemPackingList>> mObserver;
 
     private int mTripId = -1;
 

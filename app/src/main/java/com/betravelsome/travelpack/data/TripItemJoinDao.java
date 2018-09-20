@@ -7,6 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.betravelsome.travelpack.model.Item;
+import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.TripItemJoin;
 
 import java.util.List;
@@ -19,5 +20,5 @@ public interface TripItemJoinDao {
     @Query("SELECT * FROM item_table INNER JOIN trip_item_join_table ON " +
             "item_table.id=trip_item_join_table.item_id WHERE " +
             "trip_item_join_table.trip_id=:tripId")
-    LiveData<List<Item>> getItemsForTrip(final int tripId);
+    LiveData<List<ItemPackingList>> getItemsForTrip(final int tripId);
 }
