@@ -40,6 +40,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
     public interface TripAdapterOnClickHandler {
         void onClick(View v, int clickedTripId);
+
+        boolean onLongClick(View v, int clickedTripId);
     }
 
     /**
@@ -86,7 +88,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     /**
      * Cache of the children views for a trip list item.
      */
-    public class TripViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class TripViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         final TextView mTripName;
         final ImageView mTripImage;
 
@@ -95,6 +97,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             mTripName = itemView.findViewById(R.id.textViewTripName);
             mTripImage = itemView.findViewById(R.id.imageViewTrip);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         /**
@@ -110,6 +113,20 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             mClickHandler.onClick(v, id);
 
         }
+
+        /**
+         * Called when a view has been clicked and held.
+         *
+         * @param v The view that was clicked and held.
+         * @return true if the callback consumed the long click, false otherwise.
+         */
+        @Override
+        public boolean onLongClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            int id = mTripData.get(adapterPosition).getId();
+            Log.d("LONG", "onLongClick: LONG");
+            return mClickHandler.onLongClick(v, id);
+        }
     }
 
     /**
@@ -121,6 +138,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     public int getItemCount() {
         if (mTripData == null) return 0;
         return mTripData.size();
+    }
+
+    public Trip getTripByPosition(int position) {
+        return mTripData.get(position);
     }
 
     /**

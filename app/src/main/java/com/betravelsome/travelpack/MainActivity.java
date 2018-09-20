@@ -3,6 +3,7 @@ package com.betravelsome.travelpack;
 import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,7 @@ import android.view.MenuItem;
 
 import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.model.Trip;
+import com.betravelsome.travelpack.utilities.AppExecutors;
 import com.facebook.stetho.Stetho;
 
 import java.util.List;
@@ -118,6 +121,33 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         Intent packingListIntend = new Intent(MainActivity.this, PackingListActivity.class);
         packingListIntend.putExtra("TRIP_ID_EXTRA", clickedTripId);
         startActivity(packingListIntend);
+    }
+
+    @Override
+    public boolean onLongClick(View v, int clickedTripId) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Do you really want to delete this trip?")
+                .setTitle("Delete?");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Trip tripToDelete = mTripAdapter.getTripByPosition(clickedTripId);
+                AppExecutors.getInstance().diskIO().execute(() -> MainActivity.this.mTravelPackViewModel.deleteTrip(tripToDelete));
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+
+        return true;
     }
 
     public boolean checkPermissionForReadExternalStorage() {

@@ -100,4 +100,9 @@ public class TravelPackRepository {
     public void deleteGearItem(Item item) {
         mItemDao.deleteItem(item);
     }
+
+    // Wrapper to delete a trip from the trip list
+    public void deleteTrip(Trip trip) {
+        mTravelPackDao.deleteTrip(trip);
+    }
 }
