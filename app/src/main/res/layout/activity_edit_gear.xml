@@ -69,7 +69,7 @@
                 android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:textAlignment="viewStart"
+                android:textAlignment="viewEnd"
                 app:layout_constraintStart_toEndOf="@+id/textViewWeightTitle"
                 app:layout_constraintTop_toBottomOf="@+id/editTextGearName" />
 
@@ -103,7 +103,7 @@
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="An image showing the gear."
-                android:scaleType="centerInside"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="@+id/textViewImageTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewImageTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textViewImageTitle" />

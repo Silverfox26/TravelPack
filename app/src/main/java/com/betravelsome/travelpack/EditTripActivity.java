@@ -37,6 +37,10 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
     private static int PLACE_PICKER_REQUEST = 1;
     private static int IMAGE_PICKER_REQUEST = 2;
 
+    private static final String TRIP_NAME_KEY = "TRIP_NAME_KEY";
+    private static final String TRIP_PLACE_ID_KEY = "TRIP_PLACE_ID_KEY";
+    private static final String TRIP_IMAGE_KEY = "TRIP_IMAGE_KEY";
+
     private GoogleMap mMap;
 
     private TravelPackViewModel mTravelPackViewModel;
@@ -44,6 +48,7 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
     private EditText mTripName;
     private String mImagePath = null;
     private String mPlaceId = null;
+    private ImageView mTripImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,22 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mTripName = findViewById(R.id.editTextTripName);
+        mTripImage = findViewById(R.id.imageViewTrip);
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(TRIP_NAME_KEY)){
+                mTripName.setText(savedInstanceState.getString(TRIP_NAME_KEY));
+            }
+
+            if (savedInstanceState.containsKey(TRIP_PLACE_ID_KEY)) {
+                mPlaceId = savedInstanceState.getString(TRIP_PLACE_ID_KEY);
+            }
+
+            if (savedInstanceState.containsKey(TRIP_IMAGE_KEY)) {
+                mImagePath = savedInstanceState.getString(TRIP_IMAGE_KEY);
+                Glide.with(this).load(mImagePath).into(mTripImage);
+            }
+        }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapView);
@@ -63,6 +84,18 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
         // The ViewModelProvider creates the ViewModel, when the app first starts.
         // When the activity is destroyed and recreated, the Provider returns the existing ViewModel.
         mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(TRIP_NAME_KEY, mTripName.getText().toString());
+        if (mPlaceId != null) {
+            outState.putString(TRIP_PLACE_ID_KEY, mPlaceId);
+        }
+        if (mImagePath != null) {
+            outState.putString(TRIP_IMAGE_KEY, mImagePath);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     /**

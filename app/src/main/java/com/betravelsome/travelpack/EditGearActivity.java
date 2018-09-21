@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,6 +40,10 @@ public class EditGearActivity extends AppCompatActivity {
 
     private static int IMAGE_PICKER_REQUEST = 1;
 
+    private static final String GEAR_NAME_KEY = "GEAR_NAME_KEY";
+    private static final String GEAR_WEIGHT_KEY = "GEAR_WEIGHT_KEY";
+    private static final String GEAR_IMAGE_KEY = "GEAR_IMAGE_KEY";
+
     private TravelPackViewModel mTravelPackViewModel;
 
     private EditText mGearName;
@@ -66,6 +71,21 @@ public class EditGearActivity extends AppCompatActivity {
         mGearWeight = findViewById(R.id.editTextWeight);
         mGearImage = findViewById(R.id.imageViewGear);
 
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(GEAR_NAME_KEY)){
+                mGearName.setText(savedInstanceState.getString(GEAR_NAME_KEY));
+            }
+
+            if (savedInstanceState.containsKey(GEAR_WEIGHT_KEY)) {
+                mGearWeight.setText(savedInstanceState.getString(GEAR_WEIGHT_KEY));
+            }
+
+            if (savedInstanceState.containsKey(GEAR_IMAGE_KEY)) {
+                mImagePath = savedInstanceState.getString(GEAR_IMAGE_KEY);
+                Glide.with(this).load(mImagePath).into(mGearImage);
+            }
+        }
+
         // The ViewModelProvider creates the ViewModel, when the app first starts.
         // When the activity is destroyed and recreated, the Provider returns the existing ViewModel.
         mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
@@ -81,6 +101,16 @@ public class EditGearActivity extends AppCompatActivity {
             new FetchItemByIdTask(this, db).execute(itemId);
         }
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(GEAR_NAME_KEY, mGearName.getText().toString());
+        outState.putString(GEAR_WEIGHT_KEY, mGearWeight.getText().toString());
+        if (mImagePath != null) {
+            outState.putString(GEAR_IMAGE_KEY, mImagePath);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     /**
