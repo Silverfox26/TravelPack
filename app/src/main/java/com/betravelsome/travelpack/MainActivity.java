@@ -27,6 +27,9 @@ import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.utilities.AppExecutors;
 import com.facebook.stetho.Stetho;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.List;
 
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
     private TravelPackViewModel mTravelPackViewModel;
     private TripAdapter mTripAdapter;
     private Observer<List<Trip>> mObserver;
+
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
                 e.printStackTrace();
             }
         }
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // Setting the span count for the GridLayoutManager based on the device's screen width
         int posterWidth = 500;
