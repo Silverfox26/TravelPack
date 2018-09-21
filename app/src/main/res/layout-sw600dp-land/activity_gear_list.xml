@@ -20,13 +20,23 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewGearItems"
-        android:layout_width="match_parent"
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="600dp"
+        android:layout_gravity="center_horizontal"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:clipToPadding="false"
-        tools:listitem="@layout/activity_gear_list_item" />
+        android:layout_marginTop="?attr/actionBarSize">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewGearItems"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:clipToPadding="false"
+            tools:listitem="@layout/activity_gear_list_item" >
+
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

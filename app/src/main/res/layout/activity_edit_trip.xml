@@ -40,8 +40,7 @@
                 android:text="TRIP NAME"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="TRIP NAME" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/editTextTripName"
@@ -49,11 +48,10 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
                 app:layout_constraintEnd_toEndOf="@+id/textViewTripNameTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewTripNameTitle"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTripNameTitle"
-                tools:text="South America" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewTripNameTitle" />
+
 
             <TextView
                 android:id="@+id/textViewDestinationTitle"
@@ -63,31 +61,38 @@
                 android:text="DESTINATION"
                 app:layout_constraintEnd_toEndOf="@+id/editTextTripName"
                 app:layout_constraintStart_toStartOf="@+id/editTextTripName"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTripName"
-                tools:text="DESTINATION" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextTripName" />
 
-            <EditText
-                android:id="@+id/editTextDestination"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:enabled="false"
-                android:inputType="none"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonChooseDestination"
-                app:layout_constraintStart_toStartOf="@+id/textViewDestinationTitle"
-                app:layout_constraintTop_toTopOf="@+id/buttonChooseDestination" />
 
-            <Button
-                android:id="@+id/buttonChooseDestination"
+            <LinearLayout
+                android:id="@+id/linearLayoutDestination"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:onClick="onPickDestinationButtonClick"
-                android:text="Pick Destination"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="@+id/textViewDestinationTitle"
-                app:layout_constraintStart_toEndOf="@+id/editTextDestination"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDestinationTitle"
-                tools:text="Pick Destination" />
+                app:layout_constraintStart_toStartOf="@+id/textViewDestinationTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDestinationTitle">
+
+                <EditText
+                    android:id="@+id/editTextDestination"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:inputType="none" />
+
+                <Button
+                    android:id="@+id/buttonChooseDestination"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:onClick="onPickDestinationButtonClick"
+                    android:text="Pick Destination" />
+            </LinearLayout>
 
             <fragment
                 android:id="@+id/mapView"
@@ -95,9 +100,9 @@
                 android:layout_height="150dp"
                 android:layout_marginTop="8dp"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
-                app:layout_constraintEnd_toEndOf="@+id/buttonChooseDestination"
-                app:layout_constraintStart_toStartOf="@+id/editTextDestination"
-                app:layout_constraintTop_toBottomOf="@+id/buttonChooseDestination" />
+                app:layout_constraintEnd_toEndOf="@+id/linearLayoutDestination"
+                app:layout_constraintStart_toStartOf="@+id/linearLayoutDestination"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutDestination" />
 
             <TextView
                 android:id="@+id/textViewImageTitle"
@@ -107,8 +112,7 @@
                 android:text="IMAGE"
                 app:layout_constraintEnd_toEndOf="@+id/mapView"
                 app:layout_constraintStart_toStartOf="@+id/mapView"
-                app:layout_constraintTop_toBottomOf="@+id/mapView"
-                tools:text="IMAGE" />
+                app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
             <ImageView
                 android:id="@+id/imageViewTrip"
@@ -133,8 +137,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/imageViewTrip"
                 app:layout_constraintStart_toStartOf="@+id/imageViewTrip"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewTrip"
-                tools:text="PICK IMAGE" />
+                app:layout_constraintTop_toBottomOf="@+id/imageViewTrip" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
