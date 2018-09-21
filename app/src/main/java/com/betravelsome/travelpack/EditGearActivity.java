@@ -127,6 +127,20 @@ public class EditGearActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save_gear) {
 
+            if (mGearName.getText().toString().equals("")) {
+                Toast.makeText(this, "Please enter a name for your gear", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            if (mGearWeight.getText().toString().equals("")) {
+                Toast.makeText(this, "Please enter a weight for your gear", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            if (mImagePath == null) {
+                mImagePath = "android.resource://" + this.getPackageName() + "/" + R.drawable.gear;
+            }
+
             mName = mGearName.getText().toString();
             mWeight = Float.valueOf(mGearWeight.getText().toString());
 
@@ -135,14 +149,20 @@ public class EditGearActivity extends AppCompatActivity {
 
                 AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertItem(mGearItem));
 
-                // TODO Show confirmation that Trip was saved. And then exit to main activity
+                Toast.makeText(this, "Your gear was successfully saved", Toast.LENGTH_SHORT).show();
+                finish();
                 return true;
+
             } else {
                 mGearItem.setItemName(mName);
                 mGearItem.setItemWeight(mWeight);
                 mGearItem.setItemImagePath(mImagePath);
 
                 AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateGearItem(mGearItem));
+
+                Toast.makeText(this, "Your gear was successfully updated", Toast.LENGTH_SHORT).show();
+                finish();
+                return true;
             }
         }
 
