@@ -105,4 +105,9 @@ public class TravelPackRepository {
     public void deleteTrip(Trip trip) {
         mTravelPackDao.deleteTrip(trip);
     }
+
+    // Wrapper to get a Trips places id by its TripId
+    public String getTripPlaceIdById(int tripId) {
+        return mTravelPackDao.getTripPlaceIdById(tripId);
+    }
 }

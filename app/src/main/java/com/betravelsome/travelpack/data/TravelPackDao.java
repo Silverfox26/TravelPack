@@ -17,6 +17,9 @@ public interface TravelPackDao {
     @Query("SELECT * from trip_table ORDER BY trip_name")
     LiveData<List<Trip>> getAllTrips();
 
+    @Query("SELECT trip_place_id from trip_table WHERE id = :tripId")
+    String getTripPlaceIdById(int tripId);
+
     @Insert(onConflict = OnConflictStrategy.ABORT)
     void insertTrip(Trip trip);
 

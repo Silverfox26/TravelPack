@@ -80,4 +80,8 @@ public class TravelPackViewModel extends AndroidViewModel {
     public void deleteTrip(Trip trip) {
         mRepository.deleteTrip(trip);
     }
+
+    public String getTripPlaceIdById(int tripId) {
+        return mRepository.getTripPlaceIdById(tripId);
+    }
 }
