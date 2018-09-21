@@ -141,13 +141,28 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save_trip) {
+            if (mTripName.getText().toString().equals("")) {
+                Toast.makeText(this, "Please enter a name for your trip", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            if (mPlaceId == null) {
+                Toast.makeText(this, "Please pick a destination for your trip", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            if (mImagePath == null) {
+                mImagePath = "android.resource://" + this.getPackageName() + "/" + R.drawable.trip;
+            }
+
             String tripName = mTripName.getText().toString();
 
             Trip trip = new Trip(tripName, mPlaceId, mImagePath);
 
             AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertTrip(trip));
 
-            // TODO Show confirmation that Trip was saved. And then exit to main activity
+            Toast.makeText(this, "Your trip was successfully saved", Toast.LENGTH_SHORT).show();
+            finish();
             return true;
         }
 

@@ -89,7 +89,7 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
             mClickedItemId = clickedItemId;
             finish();
         } else {
-            // Start Packing List Activity for the selected Trip
+            // Start Edit Gear Activity for the selected Trip
             Intent editGearItemIntend = new Intent(GearListActivity.this, EditGearActivity.class);
             editGearItemIntend.putExtra("GEAR_ITEM_ID_EXTRA", clickedItemId);
             startActivity(editGearItemIntend);
@@ -98,7 +98,7 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
 
     @Override
     public void finish() {
-        if (mTripId == -1 && mClickedItemId == -1) {
+        if (mTripId != -1 && mClickedItemId != -1) {
             // Prepare data intent
             Intent data = new Intent();
             data.putExtra("TRIP_ID_EXTRA", mTripId);

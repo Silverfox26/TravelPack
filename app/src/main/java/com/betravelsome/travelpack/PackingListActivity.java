@@ -82,8 +82,6 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mIntent = getIntent();
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +117,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         mObserver = mPackingListAdapter::setPackingListData;
 
         // Get the intent, check its content, and populate the UI with its data
+        mIntent = getIntent();
         if (mIntent.hasExtra("TRIP_ID_EXTRA")) {
             mTripId = mIntent.getIntExtra("TRIP_ID_EXTRA", -1);
 
@@ -127,7 +126,6 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
             // Construct a GeoDataClient.
             mGeoDataClient = Places.getGeoDataClient(this);
             db = TravelPackRoomDatabase.getDatabase(this);
-
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapViewPackingList);
