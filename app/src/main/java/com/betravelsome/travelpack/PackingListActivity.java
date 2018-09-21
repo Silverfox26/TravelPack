@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -151,7 +153,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onPlusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount) {
-        TripItemJoin item = new TripItemJoin(clickedPackingListTripId, clickedPackingListItemId, clickedItemAmount + 1 );
+        TripItemJoin item = new TripItemJoin(clickedPackingListTripId, clickedPackingListItemId, clickedItemAmount + 1);
         AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateTripItemAmount(item));
     }
 
@@ -161,7 +163,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         if (clickedItemAmount < 2) {
             clickedItemAmount = 2;
         }
-        TripItemJoin item = new TripItemJoin(clickedPackingListTripId, clickedPackingListItemId, clickedItemAmount - 1 );
+        TripItemJoin item = new TripItemJoin(clickedPackingListTripId, clickedPackingListItemId, clickedItemAmount - 1);
         AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateTripItemAmount(item));
     }
 
@@ -219,6 +221,22 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
             // Update the widget with the currently selected packing list
             TravelPackWidgetService.updateWidget(this, packingList, mTripId, mTripName);
             Toast.makeText(this, "Added to Widget", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
+                // This activity is NOT part of this app's task, so create a new task
+                // when navigating up, with a synthesized back stack.
+                TaskStackBuilder.create(this)
+                        // Add all of this activity's parents to the back stack
+                        .addNextIntentWithParentStack(upIntent)
+                        // Navigate up to the closest parent
+                        .startActivities();
+            } else {
+                // This activity is part of this app's task, so simply
+                // navigate up to the logical parent activity.
+                NavUtils.navigateUpTo(this, upIntent);
+            }
             return true;
         } else
             return super.onOptionsItemSelected(item);
