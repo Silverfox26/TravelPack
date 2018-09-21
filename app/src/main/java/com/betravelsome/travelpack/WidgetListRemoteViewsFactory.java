@@ -7,7 +7,7 @@ import android.widget.RemoteViewsService;
 
 import com.betravelsome.travelpack.model.PackingListForWidget;
 
-public class WidgetListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+class WidgetListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private final Context mContext;
     private PackingListForWidget mPackingList;

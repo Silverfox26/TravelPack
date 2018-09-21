@@ -151,7 +151,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
             mGearItemName = itemView.findViewById(R.id.textViewGearName);
             mGearItemWeight = itemView.findViewById(R.id.textViewGearWeight);
             mGearItemImage = itemView.findViewById(R.id.imageViewGear);
-            mGearItemAmount = itemView.findViewById(R.id.textViewAmmount);
+            mGearItemAmount = itemView.findViewById(R.id.textViewAmount);
             mGearWeightSum = itemView.findViewById(R.id.textViewSumGearItemWeight);
             mGearItemPlus = itemView.findViewById(R.id.textViewPlus);
             mGearItemMinus = itemView.findViewById(R.id.textViewMinus);

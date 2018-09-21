@@ -12,7 +12,7 @@ import com.betravelsome.travelpack.model.TripItemJoin;
 
 import java.util.List;
 
-public class TravelPackViewModel extends AndroidViewModel {
+class TravelPackViewModel extends AndroidViewModel {
 
     // Member variable declarations
     private final TravelPackRepository mRepository;

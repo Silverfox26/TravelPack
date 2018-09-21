@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class EditGearActivity extends AppCompatActivity {
 
-    private static int IMAGE_PICKER_REQUEST = 1;
+    private static final int IMAGE_PICKER_REQUEST = 1;
 
     // Key values to save states
     private static final String GEAR_NAME_KEY = "GEAR_NAME_KEY";

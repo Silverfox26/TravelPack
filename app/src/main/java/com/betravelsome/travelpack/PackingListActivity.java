@@ -46,7 +46,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         RecyclerViewItemTouchHelper.RecyclerViewItemTouchHelperListener,
         OnMapReadyCallback {
 
-    private static int GEAR_PICKER_REQUEST = 1;
+    private static final int GEAR_PICKER_REQUEST = 1;
 
     private TravelPackViewModel mTravelPackViewModel;
     private PackingListAdapter mPackingListAdapter;
@@ -55,7 +55,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     private int mTripId = -1;
     private String mTripName = "";
 
-    protected GeoDataClient mGeoDataClient;
+    private GeoDataClient mGeoDataClient;
     private GoogleMap mMap;
     private TravelPackRoomDatabase db;
 
@@ -171,7 +171,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onSumDataChanged(float weightSum) {
-        // Update the textview with the new weight sum
+        // Update the textView with the new weight sum
         String weightSumString = String.format(Locale.ENGLISH, "%.2f", weightSum);
         gearWeightSumTextView.setText(weightSumString);
     }
@@ -199,32 +199,34 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_packing_list_to_widget) {
-            PackingListForWidget packingList = mPackingListAdapter.getPackingList();
-            // Update the widget with the currently selected packing list
-            TravelPackWidgetService.updateWidget(this, packingList, mTripId, mTripName);
-            Toast.makeText(this, "Added to Widget", Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (item.getItemId() == android.R.id.home) {
-            // Create a back stack if the activity was started by clicking on the widget
-            Intent upIntent = NavUtils.getParentActivityIntent(this);
-            assert upIntent != null;
-            if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
-                // This activity is NOT part of this app's task, so create a new task
-                // when navigating up, with a synthesized back stack.
-                TaskStackBuilder.create(this)
-                        // Add all of this activity's parents to the back stack
-                        .addNextIntentWithParentStack(upIntent)
-                        // Navigate up to the closest parent
-                        .startActivities();
-            } else {
-                // This activity is part of this app's task, so simply
-                // navigate up to the logical parent activity.
-                NavUtils.navigateUpTo(this, upIntent);
-            }
-            return true;
-        } else
-            return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_add_packing_list_to_widget:
+                PackingListForWidget packingList = mPackingListAdapter.getPackingList();
+                // Update the widget with the currently selected packing list
+                TravelPackWidgetService.updateWidget(this, packingList, mTripId, mTripName);
+                Toast.makeText(this, "Added to Widget", Toast.LENGTH_SHORT).show();
+                return true;
+            case android.R.id.home:
+                // Create a back stack if the activity was started by clicking on the widget
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                assert upIntent != null;
+                if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
+                    // This activity is NOT part of this app's task, so create a new task
+                    // when navigating up, with a synthesized back stack.
+                    TaskStackBuilder.create(this)
+                            // Add all of this activity's parents to the back stack
+                            .addNextIntentWithParentStack(upIntent)
+                            // Navigate up to the closest parent
+                            .startActivities();
+                } else {
+                    // This activity is part of this app's task, so simply
+                    // navigate up to the logical parent activity.
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**

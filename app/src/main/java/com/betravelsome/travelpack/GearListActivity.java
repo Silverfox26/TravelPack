@@ -93,7 +93,7 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
 
     @Override
     public void finish() {
-        // if the activity was called from the packing lsit activity, return the selected item
+        // if the activity was called from the packing list activity, return the selected item
         // by using an intent
         if (mTripId != -1 && mClickedItemId != -1) {
             // Prepare data intent

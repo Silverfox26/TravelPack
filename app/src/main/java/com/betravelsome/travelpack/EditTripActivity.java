@@ -29,8 +29,8 @@ import java.util.Objects;
 
 public class EditTripActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private static int PLACE_PICKER_REQUEST = 1;
-    private static int IMAGE_PICKER_REQUEST = 2;
+    private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int IMAGE_PICKER_REQUEST = 2;
 
     // Key values to save states
     private static final String TRIP_NAME_KEY = "TRIP_NAME_KEY";

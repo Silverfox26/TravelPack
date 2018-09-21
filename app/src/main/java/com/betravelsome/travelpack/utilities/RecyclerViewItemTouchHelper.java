@@ -5,7 +5,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 public class RecyclerViewItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-    private RecyclerViewItemTouchHelperListener mListener;
+    private final RecyclerViewItemTouchHelperListener mListener;
 
     /**
      * Creates a Callback for the given drag and swipe allowance.

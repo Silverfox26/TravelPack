@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         return true;
     }
 
-    public boolean checkPermissionForReadExternalStorage() {
+    private boolean checkPermissionForReadExternalStorage() {
         if (Build.VERSION.SDK_INT >= 23) {
             int result = this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
             return result == PackageManager.PERMISSION_GRANTED;
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         return false;
     }
 
-    public void requestPermissionForReadExternalStorage() {
+    private void requestPermissionForReadExternalStorage() {
         try {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
         } catch (Exception e) {
