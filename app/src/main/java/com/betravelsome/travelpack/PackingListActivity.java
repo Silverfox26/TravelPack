@@ -49,6 +49,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class PackingListActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterOnClickHandler,
@@ -173,7 +174,10 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onSumDataChanged(float weightSum) {
-        gearWeightSumTextView.setText(String.valueOf(weightSum));
+        String weightSumString = "Pack Weight: " +
+                String.format(Locale.ENGLISH, "%.2f", weightSum) +
+                " kg";
+        gearWeightSumTextView.setText(weightSumString);
     }
 
     @Override

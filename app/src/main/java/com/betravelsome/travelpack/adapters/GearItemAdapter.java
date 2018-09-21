@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.Locale;
 
 public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearItemViewHolder> {
 
@@ -58,7 +59,10 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
         Float gearItemWeight = mItemData.get(position).getItemWeight();
 
         holder.mGearItemName.setText(gearItemName);
-        holder.mGearItemWeight.setText(gearItemWeight.toString());
+
+        String gearItemWeightString = String.format(Locale.ENGLISH, "%.2f", gearItemWeight) +
+                " kg";
+        holder.mGearItemWeight.setText(gearItemWeightString);
 
         // Create the image URI and display it using Glide
         Uri uri;

@@ -19,6 +19,7 @@ import com.betravelsome.travelpack.model.TripItemJoin;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.PackingListViewHolder> {
 
@@ -71,11 +72,16 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         Integer gearItemAmount = mPackingListData.get(position).getItemAmount();
 
         holder.mGearItemName.setText(gearItemName);
-        holder.mGearItemWeight.setText(gearItemWeight.toString());
+
+        String gearItemWeightString = String.format(Locale.ENGLISH, "%.2f", gearItemWeight) +
+                " kg";
+        holder.mGearItemWeight.setText(gearItemWeightString);
         holder.mGearItemAmount.setText(String.valueOf(gearItemAmount));
 
         Float gearWeightSum = gearItemAmount * gearItemWeight;
-        holder.mGearWeightSum.setText(gearWeightSum.toString());
+        String gearItemWeightSumString = String.format(Locale.ENGLISH, "%.2f", gearWeightSum) +
+                " kg";
+        holder.mGearWeightSum.setText(gearItemWeightSumString);
 
         holder.mGearItemPlus.setOnClickListener(new View.OnClickListener() {
             @Override
