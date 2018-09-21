@@ -190,20 +190,14 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         notifyDataSetChanged();
     }
 
-    public void increaseItemCount(int position) {
-        int itemAmount = mPackingListData.get(position).getItemAmount();
-        mPackingListData.get(position).setItemAmount(itemAmount + 1);
-    }
-
     public TripItemJoin getItemByPosition(int position) {
         int tripId = mPackingListData.get(position).getTripId();
         int itemId = mPackingListData.get(position).getItemId();
-        TripItemJoin item = new TripItemJoin(tripId, itemId);
 
-        return item;
+        return new TripItemJoin(tripId, itemId);
     }
 
-    public void getGearWeightSum() {
+    private void getGearWeightSum() {
         Float weightSum = 0.0f;
 
         if (null != mPackingListData) {
