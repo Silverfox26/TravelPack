@@ -52,6 +52,8 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mTripName = findViewById(R.id.editTextTripName);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -164,6 +166,9 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
             Toast.makeText(this, "Your trip was successfully saved", Toast.LENGTH_SHORT).show();
             finish();
             return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            Toast.makeText(this, "Your changes have been dismissed.", Toast.LENGTH_SHORT).show();
+            return super.onOptionsItemSelected(item);
         }
 
         return super.onOptionsItemSelected(item);

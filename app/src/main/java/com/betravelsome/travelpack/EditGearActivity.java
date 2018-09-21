@@ -60,6 +60,8 @@ public class EditGearActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mGearName = findViewById(R.id.editTextGearName);
         mGearWeight = findViewById(R.id.editTextWeight);
         mGearImage = findViewById(R.id.imageViewGear);
@@ -164,6 +166,9 @@ public class EditGearActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
+        } else if (item.getItemId() == android.R.id.home) {
+            Toast.makeText(this, "Your changes have been dismissed.", Toast.LENGTH_SHORT).show();
+            return super.onOptionsItemSelected(item);
         }
 
         return super.onOptionsItemSelected(item);
