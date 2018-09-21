@@ -98,12 +98,14 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
 
     @Override
     public void finish() {
-        // Prepare data intent
-        Intent data = new Intent();
-        data.putExtra("TRIP_ID_EXTRA", mTripId);
-        data.putExtra("ITEM_ID_EXTRA", mClickedItemId);
-        // Activity finished ok, return the data
-        setResult(RESULT_OK, data);
+        if (mTripId == -1 && mClickedItemId == -1) {
+            // Prepare data intent
+            Intent data = new Intent();
+            data.putExtra("TRIP_ID_EXTRA", mTripId);
+            data.putExtra("ITEM_ID_EXTRA", mClickedItemId);
+            // Activity finished ok, return the data
+            setResult(RESULT_OK, data);
+        }
         super.finish();
     }
 
