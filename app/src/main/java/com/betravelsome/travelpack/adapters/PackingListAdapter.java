@@ -30,13 +30,16 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     // On-click handler to make it easy for an Activity to interface with the RecyclerView
     private final PackingListAdapter.PackingListAdapterOnClickHandler mClickHandler;
 
+    private final PackingListAdapterGetWeightSumOnDataChanged mDataChangeHandler;
+
     private final Context mContext;
 
     /**
      * Creates a PackingListAdapter.
      */
-    public PackingListAdapter(PackingListAdapter.PackingListAdapterOnClickHandler clickHandler, Context context) {
+    public PackingListAdapter(PackingListAdapter.PackingListAdapterOnClickHandler clickHandler, PackingListAdapterGetWeightSumOnDataChanged dataChangeHandler, Context context) {
         this.mClickHandler = clickHandler;
+        this.mDataChangeHandler = dataChangeHandler;
         this.mContext = context;
     }
 
@@ -46,6 +49,10 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         void onPlusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount);
 
         void onMinusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount);
+    }
+
+    public interface PackingListAdapterGetWeightSumOnDataChanged {
+        void onSumDataChanged(float weightSum);
     }
 
     /**
@@ -179,6 +186,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
      */
     public void setPackingListData(List<ItemPackingList> itemData) {
         mPackingListData = itemData;
+        getGearWeightSum();
         notifyDataSetChanged();
     }
 
@@ -194,4 +202,21 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
         return item;
     }
+
+    public void getGearWeightSum() {
+        Float weightSum = 0.0f;
+
+        if (null != mPackingListData) {
+
+            for (ItemPackingList item : mPackingListData) {
+                int itemAmount = item.getItemAmount();
+                float itemWeight = item.getItemWeight();
+                float itemWeightSum = itemAmount * itemWeight;
+                weightSum = weightSum + itemWeightSum;
+            }
+        }
+
+        mDataChangeHandler.onSumDataChanged(weightSum);
+    }
+
 }

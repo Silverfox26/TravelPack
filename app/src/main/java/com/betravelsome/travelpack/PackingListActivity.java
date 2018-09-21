@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.betravelsome.travelpack.adapters.PackingListAdapter;
@@ -34,7 +35,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import java.util.List;
 import java.util.Objects;
 
-public class PackingListActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterOnClickHandler, RecyclerViewItemTouchHelper.RecyclerViewItemTouchHelperListener {
+public class PackingListActivity extends AppCompatActivity implements PackingListAdapter.PackingListAdapterOnClickHandler, PackingListAdapter.PackingListAdapterGetWeightSumOnDataChanged, RecyclerViewItemTouchHelper.RecyclerViewItemTouchHelperListener {
 
     private static final String TAG = "CLICK";
 
@@ -45,6 +46,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     private PackingListAdapter mPackingListAdapter;
     private Observer<List<ItemPackingList>> mObserver;
     private RecyclerView packingListRecyclerView;
+    private TextView gearWeightSumTextView;
 
     private int mTripId = -1;
 
@@ -67,6 +69,8 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        gearWeightSumTextView = findViewById(R.id.textViewWeightSum);
+
         LinearLayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         packingListRecyclerView = findViewById(R.id.recyclerViewPackingList);
@@ -74,7 +78,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         // Configuring the RecyclerView and setting its adapter
         packingListRecyclerView.setLayoutManager(layoutManager);
         packingListRecyclerView.setHasFixedSize(true);
-        mPackingListAdapter = new PackingListAdapter(this, this);
+        mPackingListAdapter = new PackingListAdapter(this, this, this);
         packingListRecyclerView.setAdapter(mPackingListAdapter);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerViewItemTouchHelper(0, ItemTouchHelper.LEFT, this);
@@ -131,4 +135,8 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.deletePackingListItem(itemToDelete));
     }
 
+    @Override
+    public void onSumDataChanged(float weightSum) {
+        gearWeightSumTextView.setText(String.valueOf(weightSum));
+    }
 }
