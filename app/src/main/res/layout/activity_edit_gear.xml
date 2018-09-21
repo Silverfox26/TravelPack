@@ -36,77 +36,49 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:text="ITEM NAME"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="ITEM NAME" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/editTextGearName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textCapWords"
-                android:text="Name"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="@+id/textViewGearNameTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewGearNameTitle"
-                app:layout_constraintTop_toBottomOf="@+id/textViewGearNameTitle"
-                tools:text="Sleeping Bag" />
-
-            <TextView
-                android:id="@+id/textViewGearCategoryTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="@+id/spinnerGearCategory"
-                app:layout_constraintStart_toStartOf="@+id/editTextGearName"
-                app:layout_constraintTop_toTopOf="@+id/spinnerGearCategory"
-                tools:text="CATEGORY" />
-
-            <Spinner
-                android:id="@+id/spinnerGearCategory"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/editTextGearName"
-                app:layout_constraintStart_toEndOf="@+id/textViewGearCategoryTitle"
-                app:layout_constraintTop_toBottomOf="@+id/editTextGearName" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewGearNameTitle" />
 
             <TextView
                 android:id="@+id/textViewWeightTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:text="WEIGHT"
                 app:layout_constraintBaseline_toBaselineOf="@+id/editTextWeight"
-                app:layout_constraintStart_toStartOf="@+id/textViewGearCategoryTitle"
-                tools:text="WEIGHT" />
+                app:layout_constraintStart_toStartOf="@+id/editTextGearName" />
 
             <EditText
                 android:id="@+id/editTextWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:text="Name"
                 android:textAlignment="textEnd"
                 app:layout_constraintStart_toEndOf="@+id/textViewWeightTitle"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerGearCategory"
-                tools:text="0.5" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextGearName" />
 
             <TextView
                 android:id="@+id/textViewUnit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="TextView"
+                android:text="kg"
                 app:layout_constraintBaseline_toBaselineOf="@+id/editTextWeight"
-                app:layout_constraintEnd_toEndOf="@+id/spinnerGearCategory"
-                app:layout_constraintStart_toEndOf="@+id/editTextWeight"
-                tools:text="kg" />
+                app:layout_constraintEnd_toEndOf="@+id/editTextGearName"
+                app:layout_constraintStart_toEndOf="@+id/editTextWeight" />
 
             <TextView
                 android:id="@+id/textViewImageTitle"
@@ -114,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
-                app:layout_constraintEnd_toEndOf="@+id/spinnerGearCategory"
+                app:layout_constraintEnd_toEndOf="@+id/textViewUnit"
                 app:layout_constraintStart_toStartOf="@+id/textViewWeightTitle"
                 app:layout_constraintTop_toBottomOf="@+id/editTextWeight"
                 tools:text="IMAGE" />
@@ -137,12 +109,11 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:onClick="onPickImageButtonClick"
-                android:text="Button"
+                android:text="ADD IMAGE"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/imageViewGear"
                 app:layout_constraintStart_toStartOf="@+id/imageViewGear"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewGear"
-                tools:text="ADD IMAGE" />
+                app:layout_constraintTop_toBottomOf="@+id/imageViewGear" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
