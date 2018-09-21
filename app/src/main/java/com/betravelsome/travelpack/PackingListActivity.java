@@ -144,6 +144,10 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onMinusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount) {
+        // Prevent negative values
+        if (clickedItemAmount < 2) {
+            clickedItemAmount = 2;
+        }
         TripItemJoin item = new TripItemJoin(clickedPackingListTripId, clickedPackingListItemId, clickedItemAmount - 1 );
         AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateTripItemAmount(item));
     }
