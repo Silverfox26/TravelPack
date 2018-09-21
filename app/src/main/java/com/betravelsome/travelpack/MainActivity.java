@@ -17,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,19 +65,15 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
             }
         }
 
-        // Setting the span count for the GridLayoutManager based on the device's orientation
-        int value = this.getResources().getConfiguration().orientation;
-        GridLayoutManager layoutManager;
-        if (value == Configuration.ORIENTATION_PORTRAIT) {
-            layoutManager = new GridLayoutManager(this, 2);
-        } else {
-            layoutManager = new GridLayoutManager(this, 4);
-        }
+        // Setting the span count for the GridLayoutManager based on the device's screen width
+        int posterWidth = 500;
+        GridLayoutManager gridLayoutManager =
+                new GridLayoutManager(this, calculateBestSpanCount(posterWidth));
 
         RecyclerView tripRecyclerView = findViewById(R.id.recyclerViewTrips);
 
         // Configuring the RecyclerView and setting its adapter
-        tripRecyclerView.setLayoutManager(layoutManager);
+        tripRecyclerView.setLayoutManager(gridLayoutManager);
         tripRecyclerView.setHasFixedSize(true);
         mTripAdapter = new TripAdapter(this, this);
         tripRecyclerView.setAdapter(mTripAdapter);
@@ -165,5 +163,13 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
             e.printStackTrace();
             throw e;
         }
+    }
+
+    private int calculateBestSpanCount(int posterWidth) {
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+        float screenWidth = outMetrics.widthPixels;
+        return Math.round(screenWidth / posterWidth);
     }
 }
