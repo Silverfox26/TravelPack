@@ -22,6 +22,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.model.Trip;
@@ -129,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         // Start Packing List Activity for the selected Trip
         Intent packingListIntend = new Intent(MainActivity.this, PackingListActivity.class);
         packingListIntend.putExtra("TRIP_ID_EXTRA", clickedTripId);
+        TextView tripName = v.findViewById(R.id.textViewTripName);
+        packingListIntend.putExtra("TRIP_NAME_EXTRA", tripName.getText());
         startActivity(packingListIntend);
     }
 

@@ -15,6 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
@@ -27,6 +30,7 @@ import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.data.TravelPackRoomDatabase;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.ItemPackingList;
+import com.betravelsome.travelpack.model.PackingListForWidget;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.model.TripItemJoin;
 import com.betravelsome.travelpack.utilities.AppExecutors;
@@ -69,6 +73,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     private TextView gearWeightSumTextView;
 
     private int mTripId = -1;
+    private String mTripName = "";
 
     protected GeoDataClient mGeoDataClient;
     private GoogleMap mMap;
@@ -97,6 +102,27 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
         gearWeightSumTextView = findViewById(R.id.textViewWeightSum);
 
+        // The ViewModelProvider creates the ViewModel, when the app first starts.
+        // When the activity is destroyed and recreated, the Provider returns the existing ViewModel.
+        mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
+
+        // Get the intent, check its content, and populate the UI with its data
+        mIntent = getIntent();
+        if (mIntent.hasExtra("TRIP_ID_EXTRA") && mIntent.hasExtra("TRIP_NAME_EXTRA")) {
+            mTripId = mIntent.getIntExtra("TRIP_ID_EXTRA", -1);
+            mTripName = mIntent.getStringExtra("TRIP_NAME_EXTRA");
+
+            // Construct a GeoDataClient.
+            mGeoDataClient = Places.getGeoDataClient(this);
+            db = TravelPackRoomDatabase.getDatabase(this);
+        }
+
+        if (mTripName.equals("")) {
+            mTripName = "Your Packing List";
+        }
+
+        getSupportActionBar().setTitle(mTripName);
+
         LinearLayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         packingListRecyclerView = findViewById(R.id.recyclerViewPackingList);
@@ -104,30 +130,16 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         // Configuring the RecyclerView and setting its adapter
         packingListRecyclerView.setLayoutManager(layoutManager);
         packingListRecyclerView.setHasFixedSize(true);
-        mPackingListAdapter = new PackingListAdapter(this, this, this);
+        mPackingListAdapter = new PackingListAdapter(this, this, this, mTripId);
         packingListRecyclerView.setAdapter(mPackingListAdapter);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerViewItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(packingListRecyclerView);
 
-        // The ViewModelProvider creates the ViewModel, when the app first starts.
-        // When the activity is destroyed and recreated, the Provider returns the existing ViewModel.
-        mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
-
         // Update the cached copy of the trips in the Adapter.
         mObserver = mPackingListAdapter::setPackingListData;
 
-        // Get the intent, check its content, and populate the UI with its data
-        mIntent = getIntent();
-        if (mIntent.hasExtra("TRIP_ID_EXTRA")) {
-            mTripId = mIntent.getIntExtra("TRIP_ID_EXTRA", -1);
-
-            mTravelPackViewModel.getAllItemsForTrip(mTripId).observe(this, mObserver);
-
-            // Construct a GeoDataClient.
-            mGeoDataClient = Places.getGeoDataClient(this);
-            db = TravelPackRoomDatabase.getDatabase(this);
-        }
+        mTravelPackViewModel.getAllItemsForTrip(mTripId).observe(this, mObserver);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapViewPackingList);
         mapFragment.getMapAsync(this);
@@ -181,10 +193,35 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     }
 
     @Override
+    public void onPackingListForWidgetChanged(PackingListForWidget packingList) {
+        TravelPackWidgetService.updateWidget(this, packingList, mTripId, mTripName);
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setAllGesturesEnabled(false);
         new FetchMapViewBoundsByTripId(this).execute(mTripId);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_add_to_widget, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add_packing_list_to_widget) {
+            PackingListForWidget packingList = mPackingListAdapter.getPackingList();
+            // Update the widget with the currently selected packing list
+            TravelPackWidgetService.updateWidget(this, packingList, mTripId, mTripName);
+            Toast.makeText(this, "Added to Widget", Toast.LENGTH_SHORT).show();
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
     }
 
     /**

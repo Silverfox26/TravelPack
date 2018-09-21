@@ -11,13 +11,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.betravelsome.travelpack.Preferences;
 import com.betravelsome.travelpack.R;
 import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.ItemPackingList;
+import com.betravelsome.travelpack.model.PackingListForWidget;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.model.TripItemJoin;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,13 +38,16 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
     private final Context mContext;
 
+    private final int mTripId;
+
     /**
      * Creates a PackingListAdapter.
      */
-    public PackingListAdapter(PackingListAdapter.PackingListAdapterOnClickHandler clickHandler, PackingListAdapterGetWeightSumOnDataChanged dataChangeHandler, Context context) {
+    public PackingListAdapter(PackingListAdapter.PackingListAdapterOnClickHandler clickHandler, PackingListAdapterGetWeightSumOnDataChanged dataChangeHandler, Context context, int tripId) {
         this.mClickHandler = clickHandler;
         this.mDataChangeHandler = dataChangeHandler;
         this.mContext = context;
+        this.mTripId = tripId;
     }
 
     public interface PackingListAdapterOnClickHandler {
@@ -54,6 +60,8 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
     public interface PackingListAdapterGetWeightSumOnDataChanged {
         void onSumDataChanged(float weightSum);
+
+        void onPackingListForWidgetChanged(PackingListForWidget packingList);
     }
 
     /**
@@ -193,6 +201,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     public void setPackingListData(List<ItemPackingList> itemData) {
         mPackingListData = itemData;
         getGearWeightSum();
+        getPackingListForWidget();
         notifyDataSetChanged();
     }
 
@@ -217,6 +226,42 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         }
 
         mDataChangeHandler.onSumDataChanged(weightSum);
+    }
+
+    private void getPackingListForWidget() {
+
+        if (mTripId == Preferences.loadTripIdForWidget(mContext)) {
+            String tripName = "Test Trip";
+            List<Integer> itemAmount = new ArrayList<>();
+            List<String> itemName = new ArrayList<>();
+
+            if (null != mPackingListData) {
+
+                for (ItemPackingList item : mPackingListData) {
+                    itemAmount.add(item.getItemAmount());
+                    itemName.add(item.getItemName());
+                }
+            }
+            PackingListForWidget packingList = new PackingListForWidget(mTripId, tripName, itemAmount, itemName);
+
+            mDataChangeHandler.onPackingListForWidgetChanged(packingList);
+        }
+
+    }
+
+    public PackingListForWidget getPackingList() {
+        String tripName = "Test Trip";
+        List<Integer> itemAmount = new ArrayList<>();
+        List<String> itemName = new ArrayList<>();
+
+        if (null != mPackingListData) {
+
+            for (ItemPackingList item : mPackingListData) {
+                itemAmount.add(item.getItemAmount());
+                itemName.add(item.getItemName());
+            }
+        }
+        return new PackingListForWidget(mTripId, tripName, itemAmount, itemName);
     }
 
 }
