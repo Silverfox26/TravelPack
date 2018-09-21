@@ -2,10 +2,12 @@ package com.betravelsome.travelpack;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -111,7 +113,26 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        Item itemToDelete = mItemAdapter.getItemByPosition(position);
-        AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.deleteGearItem(itemToDelete));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Deleting this item will remove it from all your trips too!")
+                .setTitle("Delete?");
+
+        builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Item itemToDelete = mItemAdapter.getItemByPosition(position);
+                AppExecutors.getInstance().diskIO().execute(() -> GearListActivity.this.mTravelPackViewModel.deleteGearItem(itemToDelete));
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                GearListActivity.this.mItemAdapter.notifyDataSetChanged();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+
     }
 }
