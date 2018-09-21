@@ -9,7 +9,6 @@ import java.util.List;
 public class PackingListForWidget implements Parcelable {
 
     private Integer tripId;
-    private String tripName;
     private List<Integer> itemAmount;
     private List<String> itemName;
     public final static Parcelable.Creator<PackingListForWidget> CREATOR = new Creator<PackingListForWidget>() {
@@ -27,9 +26,8 @@ public class PackingListForWidget implements Parcelable {
 
     };
 
-    protected PackingListForWidget(Parcel in) {
+    private PackingListForWidget(Parcel in) {
         this.tripId = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.tripName = ((String) in.readValue((String.class.getClassLoader())));
         this.itemAmount = new ArrayList<>();
         in.readList(this.itemAmount, (Integer.class.getClassLoader()));
         this.itemName = new ArrayList<>();
@@ -45,15 +43,9 @@ public class PackingListForWidget implements Parcelable {
 
     /**
      * Constructs a PackingListForWidget object.
-     *
-     * @param tripId
-     * @param tripName
-     * @param itemAmount
-     * @param itemName
      */
-    public PackingListForWidget(Integer tripId, String tripName, List<Integer> itemAmount, List<String> itemName) {
+    public PackingListForWidget(Integer tripId, List<Integer> itemAmount, List<String> itemName) {
         this.tripId = tripId;
-        this.tripName = tripName;
         this.itemAmount = itemAmount;
         this.itemName = itemName;
     }
@@ -64,14 +56,6 @@ public class PackingListForWidget implements Parcelable {
 
     public void setTripId(Integer tripId) {
         this.tripId = tripId;
-    }
-
-    public String getTripName() {
-        return tripName;
-    }
-
-    public void setTripName(String tripName) {
-        this.tripName = tripName;
     }
 
     public List<Integer> getItemAmount() {
@@ -98,7 +82,6 @@ public class PackingListForWidget implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(tripId);
-        dest.writeValue(tripName);
         dest.writeValue(itemAmount);
         dest.writeValue(itemName);
     }

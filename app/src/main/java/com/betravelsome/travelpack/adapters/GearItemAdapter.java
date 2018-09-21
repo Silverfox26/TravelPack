@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +12,14 @@ import android.widget.TextView;
 
 import com.betravelsome.travelpack.R;
 import com.betravelsome.travelpack.model.Item;
-import com.betravelsome.travelpack.model.Trip;
-import com.betravelsome.travelpack.model.TripItemJoin;
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Locale;
 
 public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearItemViewHolder> {
 
-    // Cached copy of Trips
+    // Cached copy of Gear Items
     private List<Item> mItemData;
 
     // On-click handler to make it easy for an Activity to interface with the RecyclerView
@@ -40,6 +35,9 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
         this.mContext = context;
     }
 
+    /**
+     * OnCLickHandler interface
+     */
     public interface GearItemAdapterOnClickHandler {
         void onClick(View v, int clickedItemId);
     }
@@ -54,10 +52,12 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
     @Override
     public void onBindViewHolder(@NonNull GearItemAdapter.GearItemViewHolder holder, int position) {
 
+        // Declare and initialize variables with the gear data
         String gearItemName = mItemData.get(position).getItemName();
         String gearItemImagePath = mItemData.get(position).getItemImagePath();
         Float gearItemWeight = mItemData.get(position).getItemWeight();
 
+        // Set the data to the corresponding views
         holder.mGearItemName.setText(gearItemName);
 
         String gearItemWeightString = String.format(Locale.ENGLISH, "%.2f", gearItemWeight);
@@ -114,7 +114,6 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             int id = mItemData.get(adapterPosition).getId();
-            Log.d("AAA_ADAPTER", "onClick: " + id);
             mClickHandler.onClick(v, id);
 
         }
@@ -131,12 +130,8 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
         return mItemData.size();
     }
 
-
-    // TODO REALLY needed ?
     /**
-     * Method is used to set the trip data on a TripAdapter if one is already created.
-     * This way new data can be loaded from the web and displayed without the need for
-     * a new MovieAdapter.
+     * Method is used to set the gear data on a GearItemAdapter if one is already created.
      *
      * @param itemData The new trip data to be displayed.
      */
@@ -145,6 +140,12 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
         notifyDataSetChanged();
     }
 
+    /**
+     * Method returns a gear item specified by its id
+     *
+     * @param position The gear items position
+     * @return The requested Item
+     */
     public Item getItemByPosition(int position) {
         return mItemData.get(position);
     }

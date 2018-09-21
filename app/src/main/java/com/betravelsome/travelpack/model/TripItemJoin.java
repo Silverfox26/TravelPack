@@ -11,10 +11,10 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(tableName = "trip_item_join_table",
         primaryKeys = {"trip_id", "item_id"},
         foreignKeys = {
-            @ForeignKey(entity = Trip.class,
+                @ForeignKey(entity = Trip.class,
                         parentColumns = "id",
                         childColumns = "trip_id"),
-            @ForeignKey(entity = Item.class,
+                @ForeignKey(entity = Item.class,
                         parentColumns = "id",
                         childColumns = "item_id",
                         onDelete = CASCADE)
@@ -29,12 +29,18 @@ public class TripItemJoin {
     @ColumnInfo(name = "item_amount")
     private int itemAmount;
 
+    /**
+     * TripItemJoin Constructor
+     */
     public TripItemJoin(final int tripId, final int itemId) {
         this.tripId = tripId;
         this.itemId = itemId;
         this.itemAmount = 1;
     }
 
+    /**
+     * TripItemJoin Constructor
+     */
     @Ignore
     public TripItemJoin(final int tripId, final int itemId, final int amount) {
         this.tripId = tripId;

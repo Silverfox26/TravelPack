@@ -20,11 +20,6 @@ public class Item {
 
     /**
      * Item Constructor
-     *
-     * @param id
-     * @param itemName
-     * @param itemWeight
-     * @param itemImagePath
      */
     public Item(int id, String itemName, float itemWeight, String itemImagePath) {
         this.id = id;
@@ -35,10 +30,6 @@ public class Item {
 
     /**
      * Item Constructor
-     *
-     * @param itemName
-     * @param itemWeight
-     * @param itemImagePath
      */
     @Ignore
     public Item(String itemName, float itemWeight, String itemImagePath) {

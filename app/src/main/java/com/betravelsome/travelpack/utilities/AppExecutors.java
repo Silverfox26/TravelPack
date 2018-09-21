@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 /**
  * Code taken from the Udacity Android Developer Nanodegree "To-Do-List-AAC".
- *
+ * <p>
  * Global executor pools for the whole application.
  * <p>
  * Grouping tasks like this avoids the effects of task starvation (e.g. disk reads don't wait behind

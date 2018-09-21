@@ -1,18 +1,12 @@
 package com.betravelsome.travelpack;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,26 +14,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.betravelsome.travelpack.data.ItemDao;
 import com.betravelsome.travelpack.data.TravelPackRoomDatabase;
 import com.betravelsome.travelpack.model.Item;
-import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.utilities.AppExecutors;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.CameraUpdateFactory;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 
 public class EditGearActivity extends AppCompatActivity {
 
     private static int IMAGE_PICKER_REQUEST = 1;
 
+    // Key values to save states
     private static final String GEAR_NAME_KEY = "GEAR_NAME_KEY";
     private static final String GEAR_WEIGHT_KEY = "GEAR_WEIGHT_KEY";
     private static final String GEAR_IMAGE_KEY = "GEAR_IMAGE_KEY";
@@ -50,11 +37,7 @@ public class EditGearActivity extends AppCompatActivity {
     private EditText mGearWeight;
     private ImageView mGearImage;
     private String mImagePath = null;
-    private String mName;
-    private Float mWeight;
     private Item mGearItem = null;
-
-    private TravelPackRoomDatabase db ;
 
     private boolean isNewGearItem = true;
 
@@ -62,17 +45,19 @@ public class EditGearActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_gear);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
+        // Initialize view variables
         mGearName = findViewById(R.id.editTextGearName);
         mGearWeight = findViewById(R.id.editTextWeight);
         mGearImage = findViewById(R.id.imageViewGear);
 
+        // Check if saved instance state contains data and set it to the corresponding variables.
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(GEAR_NAME_KEY)){
+            if (savedInstanceState.containsKey(GEAR_NAME_KEY)) {
                 mGearName.setText(savedInstanceState.getString(GEAR_NAME_KEY));
             }
 
@@ -90,17 +75,17 @@ public class EditGearActivity extends AppCompatActivity {
         // When the activity is destroyed and recreated, the Provider returns the existing ViewModel.
         mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
 
-        // Get the intent and receive the itemId;
+        // Get the intent that started this activity and receive the itemId;
         Intent intent = getIntent();
         if (intent.hasExtra("GEAR_ITEM_ID_EXTRA")) {
 
             isNewGearItem = false;
             int itemId = intent.getIntExtra("GEAR_ITEM_ID_EXTRA", -1);
 
-            db = TravelPackRoomDatabase.getDatabase(this);
+            // Get the database and execute AsyncTask to retrieve the item data
+            TravelPackRoomDatabase db = TravelPackRoomDatabase.getDatabase(this);
             new FetchItemByIdTask(this, db).execute(itemId);
         }
-
     }
 
     @Override
@@ -115,8 +100,6 @@ public class EditGearActivity extends AppCompatActivity {
 
     /**
      * This method opens the image picker. So that the user can pick an image for the gear item.
-     *
-     * @param view
      */
     public void onPickImageButtonClick(View view) {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -124,18 +107,13 @@ public class EditGearActivity extends AppCompatActivity {
     }
 
     /**
-     * This method retrieves the results of the PlacePicker or ImagePicker activity.
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * This method retrieves the results of the ImagePicker activity.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("IMAGE_LOAD", "onActivityResult: " + resultCode + " " + requestCode);
+
         if (requestCode == IMAGE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Image Request Ok", Toast.LENGTH_SHORT).show();
                 mImagePath = Objects.requireNonNull(data.getData()).toString();
                 Glide.with(this).load(data.getData()).into(mGearImage);
             }
@@ -156,7 +134,6 @@ public class EditGearActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_save_gear) {
 
             if (mGearName.getText().toString().equals("")) {
@@ -173,9 +150,10 @@ public class EditGearActivity extends AppCompatActivity {
                 mImagePath = "android.resource://" + this.getPackageName() + "/" + R.drawable.gear;
             }
 
-            mName = mGearName.getText().toString();
-            mWeight = Float.valueOf(mGearWeight.getText().toString());
+            String mName = mGearName.getText().toString();
+            Float mWeight = Float.valueOf(mGearWeight.getText().toString());
 
+            // If it is a new gear item, create a new Item object
             if (isNewGearItem) {
                 mGearItem = new Item(mName, mWeight, mImagePath);
 
@@ -185,7 +163,7 @@ public class EditGearActivity extends AppCompatActivity {
                 finish();
                 return true;
 
-            } else {
+            } else { // update the old item object
                 mGearItem.setItemName(mName);
                 mGearItem.setItemWeight(mWeight);
                 mGearItem.setItemImagePath(mImagePath);
@@ -212,18 +190,10 @@ public class EditGearActivity extends AppCompatActivity {
         private final WeakReference<EditGearActivity> activityReference;
         private final TravelPackRoomDatabase mDb;
 
-        FetchItemByIdTask(EditGearActivity context,  TravelPackRoomDatabase db) {
+        FetchItemByIdTask(EditGearActivity context, TravelPackRoomDatabase db) {
             // only retain a weak reference to the activity
             activityReference = new WeakReference<>(context);
             mDb = db;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // get a reference to the activity if it is still there
-            EditGearActivity activity = activityReference.get();
-            if (activity == null || activity.isFinishing()) return;
         }
 
         @Override
@@ -255,7 +225,7 @@ public class EditGearActivity extends AppCompatActivity {
                 activity.mImagePath = activity.mGearItem.getItemImagePath();
                 Glide.with(activity).load(activity.mImagePath).into(activity.mGearImage);
             } else {
-//                activity.showErrorMessage();
+                Toast.makeText(activity, "The item could not be loaded", Toast.LENGTH_SHORT).show();
             }
         }
     }

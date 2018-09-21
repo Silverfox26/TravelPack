@@ -11,7 +11,7 @@ import com.betravelsome.travelpack.model.PackingListForWidget;
 public class TravelPackWidgetService extends RemoteViewsService{
 
     public static void updateWidget(Context context, PackingListForWidget packingList, int tripId, String tripName) {
-        // Save the packingList to sharedPreferences
+        // Save the packingList, tripID, and trip name to sharedPreferences
         Preferences.savePackingListForWidget(context, packingList);
         Preferences.saveTripIdForWidget(context, tripId);
         Preferences.saveTripNameForWidget(context, tripName);

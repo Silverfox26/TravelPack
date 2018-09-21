@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,6 @@ import android.widget.TextView;
 import com.betravelsome.travelpack.R;
 import com.betravelsome.travelpack.model.Trip;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.location.places.Place;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -38,6 +34,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         this.mContext = context;
     }
 
+    /**
+     * OnClickHandler to interface with clicks on the item, as well as long clicks
+     */
     public interface TripAdapterOnClickHandler {
         void onClick(View v, int clickedTripId);
 
@@ -54,9 +53,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     @Override
     public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
 
+        // Declare and initialize variables with the trip data
         String tripName = mTripData.get(position).getTripName();
         String tripImagePath = mTripData.get(position).getTripImagePath();
 
+        // Set the data to the corresponding views
         holder.mTripName.setText(tripName);
 
         // Create the image URI and display it using Glide
@@ -109,7 +110,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             int id = mTripData.get(adapterPosition).getId();
-            Log.d("AAA_ADAPTER", "onClick: " + id);
             mClickHandler.onClick(v, id);
 
         }
@@ -124,7 +124,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         public boolean onLongClick(View v) {
             int adapterPosition = getAdapterPosition();
             int id = mTripData.get(adapterPosition).getId();
-            Log.d("LONG", "onLongClick: LONG");
             return mClickHandler.onLongClick(v, id);
         }
     }
@@ -140,14 +139,15 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         return mTripData.size();
     }
 
+    /**
+     * Method returns a Trip object by its position
+     */
     public Trip getTripByPosition(int position) {
         return mTripData.get(position);
     }
 
     /**
      * Method is used to set the trip data on a TripAdapter if one is already created.
-     * This way new data can be loaded from the web and displayed without the need for
-     * a new MovieAdapter.
      *
      * @param tripData The new trip data to be displayed.
      */

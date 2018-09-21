@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.PackingListForWidget;
 
 /**
@@ -16,7 +15,7 @@ import com.betravelsome.travelpack.model.PackingListForWidget;
 public class TravelPackWidget extends AppWidgetProvider {
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+                                        int appWidgetId) {
 
         PackingListForWidget packingList = Preferences.loadPackingListForWidget(context);
         int tripID = Preferences.loadTripIdForWidget(context);
@@ -26,7 +25,7 @@ public class TravelPackWidget extends AppWidgetProvider {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.travel_pack_widget);
 
-            views.setTextViewText(R.id.packing_list_name_widget_text_view, packingList.getTripName());
+            views.setTextViewText(R.id.packing_list_name_widget_text_view, tripName);
 
             // Create an Intent to launch PackingListActivity when clicked
             Intent intent = new Intent(context, PackingListActivity.class);

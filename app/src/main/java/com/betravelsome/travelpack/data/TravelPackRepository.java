@@ -13,35 +13,23 @@ import java.util.List;
 public class TravelPackRepository {
 
     // Member variable declarations
-    private final TravelPackDao mTravelPackDao;
+    private final TripDao mTripDao;
     private final ItemDao mItemDao;
     private final TripItemJoinDao mTripItemJoinDao;
     private final LiveData<List<Trip>> mTrips;
     private final LiveData<List<Item>> mItems;
-    private  LiveData<List<ItemPackingList>> mTripItems;
+    private LiveData<List<ItemPackingList>> mTripItems;
 
     public TravelPackRepository(Application application) {
         TravelPackRoomDatabase db = TravelPackRoomDatabase.getDatabase(application);
-        mTravelPackDao = db.travelPackDao();
+        mTripDao = db.travelPackDao();
         mItemDao = db.ItemDao();
         mTripItemJoinDao = db.tripItemJoinDao();
 
-        mTrips = mTravelPackDao.getAllTrips();
+        mTrips = mTripDao.getAllTrips();
         mItems = mItemDao.getAllItems();
-        // TODO Might be a problem???
         mTripItems = null;
     }
-
-//    public TravelPackRepository(Application application, int tripId) {
-//        TravelPackRoomDatabase db = TravelPackRoomDatabase.getDatabase(application);
-//        mTravelPackDao = db.travelPackDao();
-//        mItemDao = db.ItemDao();
-//        mTripItemJoinDao = db.tripItemJoinDao();
-//
-//        mTrips = mTravelPackDao.getAllTrips();
-//        mItems = mItemDao.getAllItems();
-//        mTripItems = mTripItemJoinDao.getItemsForTrip(tripId);
-//    }
 
     // Wrapper to get the list of all trips.
     // Room executes all queries on a separate thread.
@@ -52,7 +40,7 @@ public class TravelPackRepository {
 
     // Wrapper to insert a trip into the db
     public void insertTrip(Trip trip) {
-        mTravelPackDao.insertTrip(trip);
+        mTripDao.insertTrip(trip);
     }
 
     // Wrapper to get the list of all items.
@@ -74,11 +62,6 @@ public class TravelPackRepository {
     // Wrapper to insert a trip item join into the db
     public void insertTripItemJoin(int tripId, int itemId) {
         mTripItemJoinDao.insert(new TripItemJoin(tripId, itemId));
-    }
-
-    // Wrapper to get a gear item by id
-    public Item getGearItemById(int itemId) {
-        return mItemDao.getItemById(itemId);
     }
 
     // Wrapper to update a gear item
@@ -103,11 +86,6 @@ public class TravelPackRepository {
 
     // Wrapper to delete a trip from the trip list
     public void deleteTrip(Trip trip) {
-        mTravelPackDao.deleteTrip(trip);
-    }
-
-    // Wrapper to get a Trips places id by its TripId
-    public String getTripPlaceIdById(int tripId) {
-        return mTravelPackDao.getTripPlaceIdById(tripId);
+        mTripDao.deleteTrip(trip);
     }
 }

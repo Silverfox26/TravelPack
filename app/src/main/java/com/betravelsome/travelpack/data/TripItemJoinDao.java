@@ -8,7 +8,6 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.TripItemJoin;
 

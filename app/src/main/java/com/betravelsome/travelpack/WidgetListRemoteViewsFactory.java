@@ -1,9 +1,6 @@
 package com.betravelsome.travelpack;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -20,7 +17,7 @@ public class WidgetListRemoteViewsFactory implements RemoteViewsService.RemoteVi
     }
 
     /**
-     * Called when your factory is first constructed. The same factory may be shared across
+     * Called when the factory is first constructed. The same factory may be shared across
      * multiple RemoteViewAdapters depending on the intent passed.
      */
     @Override
@@ -47,7 +44,7 @@ public class WidgetListRemoteViewsFactory implements RemoteViewsService.RemoteVi
     }
 
     /**
-     * Retirns the size of the Packing List data
+     * Returns the size of the Packing List data
      *
      * @return Count of items.
      */

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,8 @@ import android.widget.TextView;
 
 import com.betravelsome.travelpack.Preferences;
 import com.betravelsome.travelpack.R;
-import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.PackingListForWidget;
-import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.model.TripItemJoin;
 import com.bumptech.glide.Glide;
 
@@ -26,18 +23,16 @@ import java.util.Locale;
 
 public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.PackingListViewHolder> {
 
-    private final static String TAG = "CLICK";
-
     // Cached copy of Packing List Items
     private List<ItemPackingList> mPackingListData;
 
     // On-click handler to make it easy for an Activity to interface with the RecyclerView
     private final PackingListAdapter.PackingListAdapterOnClickHandler mClickHandler;
 
+    // Handler that makes it easy for an Activity to react to changes in the overall weight of the items
     private final PackingListAdapterGetWeightSumOnDataChanged mDataChangeHandler;
 
     private final Context mContext;
-
     private final int mTripId;
 
     /**
@@ -50,6 +45,9 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         this.mTripId = tripId;
     }
 
+    /**
+     * OnClickHandler to interface with clicks on the item, as well as its plus and minus buttons
+     */
     public interface PackingListAdapterOnClickHandler {
         void onClick(View v, int clickedPackingListItemId);
 
@@ -58,6 +56,9 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         void onMinusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount);
     }
 
+    /**
+     * Handler the gets called, when the overall item weight changes
+     */
     public interface PackingListAdapterGetWeightSumOnDataChanged {
         void onSumDataChanged(float weightSum);
 
@@ -74,11 +75,13 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     @Override
     public void onBindViewHolder(@NonNull PackingListAdapter.PackingListViewHolder holder, int position) {
 
+        // Declare and initialize variables with the packing list data
         String gearItemName = mPackingListData.get(position).getItemName();
         Float gearItemWeight = mPackingListData.get(position).getItemWeight();
         String gearItemImagePath = mPackingListData.get(position).getItemImagePath();
         Integer gearItemAmount = mPackingListData.get(position).getItemAmount();
 
+        // Set the data to the corresponding views
         holder.mGearItemName.setText(gearItemName);
 
         String gearItemWeightString = String.format(Locale.ENGLISH, "%.2f", gearItemWeight);
@@ -89,28 +92,20 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         String gearItemWeightSumString = String.format(Locale.ENGLISH, "%.2f", gearWeightSum);
         holder.mGearWeightSum.setText(gearItemWeightSumString);
 
-        holder.mGearItemPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Plus Clicked");
-                int adapterPosition = holder.getAdapterPosition();
-                int tripId = mPackingListData.get(adapterPosition).getTripId();
-                int itemId = mPackingListData.get(adapterPosition).getItemId();
-                int itemAmount = mPackingListData.get(adapterPosition).getItemAmount();
-                mClickHandler.onPlusClicked(v, tripId, itemId, itemAmount);
-            }
+        holder.mGearItemPlus.setOnClickListener(v -> {
+            int adapterPosition = holder.getAdapterPosition();
+            int tripId = mPackingListData.get(adapterPosition).getTripId();
+            int itemId = mPackingListData.get(adapterPosition).getItemId();
+            int itemAmount = mPackingListData.get(adapterPosition).getItemAmount();
+            mClickHandler.onPlusClicked(v, tripId, itemId, itemAmount);
         });
 
-        holder.mGearItemMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Minus Clicked");
-                int adapterPosition = holder.getAdapterPosition();
-                int tripId = mPackingListData.get(adapterPosition).getTripId();
-                int itemId = mPackingListData.get(adapterPosition).getItemId();
-                int itemAmount = mPackingListData.get(adapterPosition).getItemAmount();
-                mClickHandler.onMinusClicked(v, tripId, itemId, itemAmount);
-            }
+        holder.mGearItemMinus.setOnClickListener(v -> {
+            int adapterPosition = holder.getAdapterPosition();
+            int tripId = mPackingListData.get(adapterPosition).getTripId();
+            int itemId = mPackingListData.get(adapterPosition).getItemId();
+            int itemAmount = mPackingListData.get(adapterPosition).getItemAmount();
+            mClickHandler.onMinusClicked(v, tripId, itemId, itemAmount);
         });
 
         // Create the image URI and display it using Glide
@@ -172,9 +167,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             int id = mPackingListData.get(adapterPosition).getId();
-            Log.d("AAA_ADAPTER", "onClick: " + id + v);
             mClickHandler.onClick(v, id);
-
         }
     }
 
@@ -191,8 +184,6 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
     /**
      * Method is used to set the packing list data on a PackingListAdapter if one is already created.
-     * This way new data can be loaded from the web and displayed without the need for
-     * a new MovieAdapter.
      *
      * @param itemData The new packing list data to be displayed.
      */
@@ -203,6 +194,10 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         notifyDataSetChanged();
     }
 
+    /**
+     * Returns a TripItemJoin object that holds a database relation for a trip and
+     * an item
+     */
     public TripItemJoin getItemByPosition(int position) {
         int tripId = mPackingListData.get(position).getTripId();
         int itemId = mPackingListData.get(position).getItemId();
@@ -210,6 +205,9 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         return new TripItemJoin(tripId, itemId);
     }
 
+    /**
+     * Method returns the sum of all item weights of the packing list
+     */
     private void getGearWeightSum() {
         Float weightSum = 0.0f;
 
@@ -226,10 +224,12 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
         mDataChangeHandler.onSumDataChanged(weightSum);
     }
 
+    /**
+     * Method to refresh the packing list data for the apps widget whenever the data changes
+     */
     private void getPackingListForWidget() {
 
         if (mTripId == Preferences.loadTripIdForWidget(mContext)) {
-            String tripName = "Test Trip";
             List<Integer> itemAmount = new ArrayList<>();
             List<String> itemName = new ArrayList<>();
 
@@ -240,15 +240,20 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
                     itemName.add(item.getItemName());
                 }
             }
-            PackingListForWidget packingList = new PackingListForWidget(mTripId, tripName, itemAmount, itemName);
+            PackingListForWidget packingList = new PackingListForWidget(mTripId, itemAmount, itemName);
 
             mDataChangeHandler.onPackingListForWidgetChanged(packingList);
         }
 
     }
 
+    /**
+     * Method to return the whole packing list. Use when user adds a packing list to the
+     * widget for the first time.
+     *
+     * @return the packing list data
+     */
     public PackingListForWidget getPackingList() {
-        String tripName = "Test Trip";
         List<Integer> itemAmount = new ArrayList<>();
         List<String> itemName = new ArrayList<>();
 
@@ -259,7 +264,6 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
                 itemName.add(item.getItemName());
             }
         }
-        return new PackingListForWidget(mTripId, tripName, itemAmount, itemName);
+        return new PackingListForWidget(mTripId, itemAmount, itemName);
     }
-
 }

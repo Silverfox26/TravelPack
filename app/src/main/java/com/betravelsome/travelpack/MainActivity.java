@@ -3,14 +3,11 @@ package com.betravelsome.travelpack;
 import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,50 +16,40 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.utilities.AppExecutors;
-import com.facebook.stetho.Stetho;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TripAdapter.TripAdapterOnClickHandler{
+public class MainActivity extends AppCompatActivity implements TripAdapter.TripAdapterOnClickHandler {
 
-    private List<Trip> mTrips = null;
     private TravelPackViewModel mTravelPackViewModel;
     private TripAdapter mTripAdapter;
-    private Observer<List<Trip>> mObserver;
-
-    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Stetho.initializeWithDefaults(this);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Start EditTrip Activity
-                Intent addTripIntend = new Intent(MainActivity.this, EditTripActivity.class);
-                startActivity(addTripIntend);
-            }
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            // Start EditTrip Activity
+            Intent addTripIntend = new Intent(MainActivity.this, EditTripActivity.class);
+            startActivity(addTripIntend);
         });
 
-        // TODO if permission is not granted, use standard image for the trips
+        // Check and request permissions for reading external storage
         if (!checkPermissionForReadExternalStorage()) {
             try {
                 requestPermissionForReadExternalStorage();
@@ -71,20 +58,21 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
             }
         }
 
+        // Initialize and show test ads
         MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
-        mAdView = findViewById(R.id.adView);
+        AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
         // Setting the span count for the GridLayoutManager based on the device's screen width
-        int posterWidth = 500;
+        int itemWidth = 500;
         GridLayoutManager gridLayoutManager =
-                new GridLayoutManager(this, calculateBestSpanCount(posterWidth));
-
-        RecyclerView tripRecyclerView = findViewById(R.id.recyclerViewTrips);
+                new GridLayoutManager(this, calculateBestSpanCount(itemWidth));
 
         // Configuring the RecyclerView and setting its adapter
+        RecyclerView tripRecyclerView = findViewById(R.id.recyclerViewTrips);
+
         tripRecyclerView.setLayoutManager(gridLayoutManager);
         tripRecyclerView.setHasFixedSize(true);
         mTripAdapter = new TripAdapter(this, this);
@@ -95,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
 
         // Update the cached copy of the trips in the Adapter.
-        mObserver = mTripAdapter::setTripData;
+        Observer<List<Trip>> mObserver = mTripAdapter::setTripData;
 
         mTravelPackViewModel.getAllTrips().observe(this, mObserver);
     }
@@ -114,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_gear_items) {
             // Start GearList Activity
             Intent gearListIntend = new Intent(MainActivity.this, GearListActivity.class);
@@ -138,21 +125,18 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
     @Override
     public boolean onLongClick(View v, int clickedTripId) {
 
+        // Create a dialog warning the user about the deletion of the trip
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage("Do you really want to delete this trip?")
                 .setTitle("Delete?");
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Trip tripToDelete = mTripAdapter.getTripByPosition(clickedTripId);
-                AppExecutors.getInstance().diskIO().execute(() -> MainActivity.this.mTravelPackViewModel.deleteTrip(tripToDelete));
-            }
+        builder.setPositiveButton("OK", (dialog, id) -> {
+            Trip tripToDelete = mTripAdapter.getTripByPosition(clickedTripId);
+            AppExecutors.getInstance().diskIO().execute(() -> MainActivity.this.mTravelPackViewModel.deleteTrip(tripToDelete));
         });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-            }
+        builder.setNegativeButton("CANCEL", (dialog, id) -> {
+            // User cancelled the dialog
         });
 
         AlertDialog dialog = builder.create();
@@ -170,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         return false;
     }
 
-    public void requestPermissionForReadExternalStorage() throws Exception {
+    public void requestPermissionForReadExternalStorage() {
         try {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 3);
         } catch (Exception e) {
@@ -179,11 +163,17 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         }
     }
 
-    private int calculateBestSpanCount(int posterWidth) {
+    /**
+     * Method calculates the best span count for a grid view based on the screen width.
+     *
+     * @param itemWidth the width of the items
+     * @return calculated span count
+     */
+    private int calculateBestSpanCount(int itemWidth) {
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
         float screenWidth = outMetrics.widthPixels;
-        return Math.round(screenWidth / posterWidth);
+        return Math.round(screenWidth / itemWidth);
     }
 }

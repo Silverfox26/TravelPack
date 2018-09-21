@@ -1,8 +1,6 @@
 package com.betravelsome.travelpack.model;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
 
 public class ItemPackingList {
 
@@ -24,6 +22,9 @@ public class ItemPackingList {
     @ColumnInfo(name = "item_amount")
     private int itemAmount;
 
+    /**
+     * ItemPackingList Constructor
+     */
     public ItemPackingList(int id, int tripId, int itemId, String itemName, float itemWeight, String itemImagePath, int itemAmount) {
         this.id = id;
         this.tripId = tripId;

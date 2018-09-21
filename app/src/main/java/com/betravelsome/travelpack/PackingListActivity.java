@@ -5,53 +5,36 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.betravelsome.travelpack.adapters.PackingListAdapter;
-import com.betravelsome.travelpack.adapters.TripAdapter;
 import com.betravelsome.travelpack.data.TravelPackRoomDatabase;
-import com.betravelsome.travelpack.model.Item;
 import com.betravelsome.travelpack.model.ItemPackingList;
 import com.betravelsome.travelpack.model.PackingListForWidget;
-import com.betravelsome.travelpack.model.Trip;
 import com.betravelsome.travelpack.model.TripItemJoin;
 import com.betravelsome.travelpack.utilities.AppExecutors;
 import com.betravelsome.travelpack.utilities.RecyclerViewItemTouchHelper;
-import com.bumptech.glide.Glide;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.PlacesOptions;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -63,15 +46,10 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         RecyclerViewItemTouchHelper.RecyclerViewItemTouchHelperListener,
         OnMapReadyCallback {
 
-    private static final String TAG = "CLICK";
-
     private static int GEAR_PICKER_REQUEST = 1;
 
-    private List<Item> mItems = null;
     private TravelPackViewModel mTravelPackViewModel;
     private PackingListAdapter mPackingListAdapter;
-    private Observer<List<ItemPackingList>> mObserver;
-    private RecyclerView packingListRecyclerView;
     private TextView gearWeightSumTextView;
 
     private int mTripId = -1;
@@ -80,28 +58,25 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     protected GeoDataClient mGeoDataClient;
     private GoogleMap mMap;
     private TravelPackRoomDatabase db;
-    private LatLngBounds mViewport;
-    private Intent mIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_packing_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Start Pick Gear List Activity to select a gear item to be added to the packing list
-                Intent packingListIntend = new Intent(PackingListActivity.this, GearListActivity.class);
-                packingListIntend.putExtra("TRIP_ID_EXTRA", mTripId);
-                startActivityForResult(packingListIntend, GEAR_PICKER_REQUEST);
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            // Start Pick Gear List Activity to select a gear item to be added to the packing list
+            Intent packingListIntend = new Intent(PackingListActivity.this, GearListActivity.class);
+            packingListIntend.putExtra("TRIP_ID_EXTRA", mTripId);
+            startActivityForResult(packingListIntend, GEAR_PICKER_REQUEST);
+        });
+
+        // initialize view variables
         gearWeightSumTextView = findViewById(R.id.textViewWeightSum);
 
         // The ViewModelProvider creates the ViewModel, when the app first starts.
@@ -109,16 +84,17 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         mTravelPackViewModel = ViewModelProviders.of(this).get(TravelPackViewModel.class);
 
         // Get the intent, check its content, and populate the UI with its data
-        mIntent = getIntent();
-        if (mIntent.hasExtra("TRIP_ID_EXTRA") && mIntent.hasExtra("TRIP_NAME_EXTRA")) {
-            mTripId = mIntent.getIntExtra("TRIP_ID_EXTRA", -1);
-            mTripName = mIntent.getStringExtra("TRIP_NAME_EXTRA");
+        Intent intent = getIntent();
+        if (intent.hasExtra("TRIP_ID_EXTRA") && intent.hasExtra("TRIP_NAME_EXTRA")) {
+            mTripId = intent.getIntExtra("TRIP_ID_EXTRA", -1);
+            mTripName = intent.getStringExtra("TRIP_NAME_EXTRA");
 
             // Construct a GeoDataClient.
             mGeoDataClient = Places.getGeoDataClient(this);
             db = TravelPackRoomDatabase.getDatabase(this);
         }
 
+        // Fallback in case the trip name is an empty String
         if (mTripName.equals("")) {
             mTripName = "Your Packing List";
         }
@@ -127,9 +103,9 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
         LinearLayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        packingListRecyclerView = findViewById(R.id.recyclerViewPackingList);
 
         // Configuring the RecyclerView and setting its adapter
+        RecyclerView packingListRecyclerView = findViewById(R.id.recyclerViewPackingList);
         packingListRecyclerView.setLayoutManager(layoutManager);
         packingListRecyclerView.setHasFixedSize(true);
         mPackingListAdapter = new PackingListAdapter(this, this, this, mTripId);
@@ -139,10 +115,11 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(packingListRecyclerView);
 
         // Update the cached copy of the trips in the Adapter.
-        mObserver = mPackingListAdapter::setPackingListData;
+        Observer<List<ItemPackingList>> mObserver = mPackingListAdapter::setPackingListData;
 
         mTravelPackViewModel.getAllItemsForTrip(mTripId).observe(this, mObserver);
 
+        // Get the map support fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapViewPackingList);
         mapFragment.getMapAsync(this);
     }
@@ -153,12 +130,15 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onPlusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount) {
+        // Increment the item count and update the db
         TripItemJoin item = new TripItemJoin(clickedPackingListTripId, clickedPackingListItemId, clickedItemAmount + 1);
         AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateTripItemAmount(item));
     }
 
     @Override
     public void onMinusClicked(View v, int clickedPackingListTripId, int clickedPackingListItemId, int clickedItemAmount) {
+        // Decrement the item count and update the db
+
         // Prevent negative values
         if (clickedItemAmount < 2) {
             clickedItemAmount = 2;
@@ -167,7 +147,9 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateTripItemAmount(item));
     }
 
-
+    /**
+     * This method retrieves the results of the Gear Picker activity.
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GEAR_PICKER_REQUEST) {
@@ -182,18 +164,21 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        // Delete item from list
         TripItemJoin itemToDelete = mPackingListAdapter.getItemByPosition(position);
         AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.deletePackingListItem(itemToDelete));
     }
 
     @Override
     public void onSumDataChanged(float weightSum) {
+        // Update the textview with the new weight sum
         String weightSumString = String.format(Locale.ENGLISH, "%.2f", weightSum);
         gearWeightSumTextView.setText(weightSumString);
     }
 
     @Override
     public void onPackingListForWidgetChanged(PackingListForWidget packingList) {
+        // Update the Widget
         TravelPackWidgetService.updateWidget(this, packingList, mTripId, mTripName);
     }
 
@@ -221,7 +206,9 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
             Toast.makeText(this, "Added to Widget", Toast.LENGTH_SHORT).show();
             return true;
         } else if (item.getItemId() == android.R.id.home) {
+            // Create a back stack if the activity was started by clicking on the widget
             Intent upIntent = NavUtils.getParentActivityIntent(this);
+            assert upIntent != null;
             if (NavUtils.shouldUpRecreateTask(this, upIntent) || isTaskRoot()) {
                 // This activity is NOT part of this app's task, so create a new task
                 // when navigating up, with a synthesized back stack.
@@ -241,7 +228,8 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     }
 
     /**
-     * AsyncTask to fetch a trips PlacesId by its TripId from the travel pack db.
+     * AsyncTask to fetch a trips PlacesId by its TripId from the travel pack db and update the
+     * maps view bounds.
      */
     private static class FetchMapViewBoundsByTripId extends AsyncTask<Integer, Void, String> {
 
@@ -250,14 +238,6 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         FetchMapViewBoundsByTripId(PackingListActivity context) {
             // only retain a weak reference to the activity
             activityReference = new WeakReference<>(context);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // get a reference to the activity if it is still there
-            PackingListActivity activity = activityReference.get();
-            if (activity == null || activity.isFinishing()) return;
         }
 
         @Override
@@ -282,24 +262,20 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
             if (placesId != null) {
 
-                activity.mGeoDataClient.getPlaceById(placesId).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
-                    @Override
-                    public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
-                        if (task.isSuccessful()) {
-                            PlaceBufferResponse places = task.getResult();
-                            Place returnedPlace = places.get(0);
+                activity.mGeoDataClient.getPlaceById(placesId).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        PlaceBufferResponse places = task.getResult();
+                        Place returnedPlace = places.get(0);
 
-                            Log.d(TAG, "onComplete: " + returnedPlace.getId() + returnedPlace.getName());
-                            activity.mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(returnedPlace.getViewport(), 0));
+                        activity.mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(returnedPlace.getViewport(), 0));
 
-                            places.release();
-                        } else {
-                            Log.e(TAG, "Place not found.");
-                        }
+                        places.release();
+                    } else {
+                        Toast.makeText(activity, "The destination could not be found", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
-//                activity.showErrorMessage();
+                Toast.makeText(activity, "The destination could not be found", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -2,13 +2,10 @@ package com.betravelsome.travelpack;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,8 +24,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Objects;
 
@@ -37,6 +32,7 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
     private static int PLACE_PICKER_REQUEST = 1;
     private static int IMAGE_PICKER_REQUEST = 2;
 
+    // Key values to save states
     private static final String TRIP_NAME_KEY = "TRIP_NAME_KEY";
     private static final String TRIP_PLACE_ID_KEY = "TRIP_PLACE_ID_KEY";
     private static final String TRIP_IMAGE_KEY = "TRIP_IMAGE_KEY";
@@ -48,22 +44,23 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
     private EditText mTripName;
     private String mImagePath = null;
     private String mPlaceId = null;
-    private ImageView mTripImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_trip);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
+        // Initialize view variables
         mTripName = findViewById(R.id.editTextTripName);
-        mTripImage = findViewById(R.id.imageViewTrip);
+        ImageView mTripImage = findViewById(R.id.imageViewTrip);
 
+        // Check if saved instance state contains data and set it to the corresponding variables.
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(TRIP_NAME_KEY)){
+            if (savedInstanceState.containsKey(TRIP_NAME_KEY)) {
                 mTripName.setText(savedInstanceState.getString(TRIP_NAME_KEY));
             }
 
@@ -77,6 +74,7 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
             }
         }
 
+        // get the map support fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
@@ -100,8 +98,6 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
 
     /**
      * This method opens the PlacePicker, so the user can choose the destination for the trip.
-     *
-     * @param view
      */
     public void onPickDestinationButtonClick(View view) {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
@@ -116,8 +112,6 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
 
     /**
      * This method opens the image picker. So that the user can pick an image for the trip.
-     *
-     * @param view
      */
     public void onPickImageButtonClick(View view) {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -125,15 +119,10 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
     /**
-     * This method retrieves the results of the PlacePicker or ImagePicker activity.
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * This method retrieves the results of the PlacePicker and ImagePicker activity.
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("IMAGE_LOAD", "onActivityResult: " + resultCode + " " + requestCode);
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 EditText destinationEditText = findViewById(R.id.editTextDestination);
@@ -146,7 +135,6 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
             }
         } else if (requestCode == IMAGE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "Image Request Ok", Toast.LENGTH_SHORT).show();
                 ImageView imageView = findViewById(R.id.imageViewTrip);
                 mImagePath = Objects.requireNonNull(data.getData()).toString();
                 Glide.with(this).load(data.getData()).into(imageView);
@@ -174,7 +162,6 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_save_trip) {
             if (mTripName.getText().toString().equals("")) {
                 Toast.makeText(this, "Please enter a name for your trip", Toast.LENGTH_SHORT).show();
@@ -203,7 +190,6 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
             Toast.makeText(this, "Your changes have been dismissed.", Toast.LENGTH_SHORT).show();
             return super.onOptionsItemSelected(item);
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

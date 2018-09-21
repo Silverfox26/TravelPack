@@ -20,11 +20,6 @@ public class Trip {
 
     /**
      * Trip constructor
-     *
-     * @param id
-     * @param tripName
-     * @param tripPlaceId
-     * @param tripImagePath
      */
     public Trip(int id, String tripName, String tripPlaceId, String tripImagePath) {
         this.id = id;
@@ -35,10 +30,6 @@ public class Trip {
 
     /**
      * Trip constructor
-     *
-     * @param tripName
-     * @param tripPlaceId
-     * @param tripImagePath
      */
     @Ignore
     public Trip(String tripName, String tripPlaceId, String tripImagePath) {
