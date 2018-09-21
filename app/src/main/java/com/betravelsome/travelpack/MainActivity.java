@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         }
 
         // Initialize and show test ads
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(this, getString(R.string.google_ad));
 
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -116,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
     public void onClick(View v, int clickedTripId) {
         // Start Packing List Activity for the selected Trip
         Intent packingListIntend = new Intent(MainActivity.this, PackingListActivity.class);
-        packingListIntend.putExtra("TRIP_ID_EXTRA", clickedTripId);
+        packingListIntend.putExtra(getString(R.string.TRIP_ID_EXTRA_KEY), clickedTripId);
         TextView tripName = v.findViewById(R.id.textViewTripName);
-        packingListIntend.putExtra("TRIP_NAME_EXTRA", tripName.getText());
+        packingListIntend.putExtra(getString(R.string.TRIP_NAME_EXTRA_KEY), tripName.getText());
         startActivity(packingListIntend);
     }
 
@@ -128,14 +128,14 @@ public class MainActivity extends AppCompatActivity implements TripAdapter.TripA
         // Create a dialog warning the user about the deletion of the trip
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage("Do you really want to delete this trip?")
-                .setTitle("Delete?");
+        builder.setMessage(R.string.delete_trip_question_dialog)
+                .setTitle(R.string.delete_dialog_title);
 
-        builder.setPositiveButton("OK", (dialog, id) -> {
+        builder.setPositiveButton(R.string.ok, (dialog, id) -> {
             Trip tripToDelete = mTripAdapter.getTripByPosition(clickedTripId);
             AppExecutors.getInstance().diskIO().execute(() -> MainActivity.this.mTravelPackViewModel.deleteTrip(tripToDelete));
         });
-        builder.setNegativeButton("CANCEL", (dialog, id) -> {
+        builder.setNegativeButton(R.string.cancel, (dialog, id) -> {
             // User cancelled the dialog
         });
 

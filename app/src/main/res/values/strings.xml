@@ -22,5 +22,30 @@
     <string name="show_in_widget">Show in Widget</string>
     <string name="save">Save</string>
     <string name="gear_library">Gear Library</string>
+    <string name="TRIP_ID_EXTRA_KEY">TRIP_ID_EXTRA</string>
+    <string name="TRIP_NAME_EXTRA_KEY">TRIP_NAME_EXTRA</string>
+    <string name="google_ad">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="delete_trip_question_dialog">Do you really want to delete this trip?</string>
+    <string name="delete_dialog_title">Delete?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="ITEM_ID_EXTRA_KEY">ITEM_ID_EXTRA</string>
+    <string name="your_packing_list">Your Packing List</string>
+    <string name="decimal_places_format">%.2f</string>
+    <string name="toast_added_to_widget">Added to Widget</string>
+    <string name="destination_not_found">The destination could not be found</string>
+    <string name="enter_trip_name">Please enter a name for your trip</string>
+    <string name="pick_destination">Please pick a destination for your trip</string>
+    <string name="android_resources">android.resource://</string>
+    <string name="trip_saved">Your trip was successfully saved</string>
+    <string name="changes_dismissed">Your changes have been dismissed.</string>
+    <string name="GEAR_ITEM_ID_EXTRA_KEY">GEAR_ITEM_ID_EXTRA</string>
+    <string name="delete_item_dialog">Deleting this item will remove it from all your trips too!</string>
+    <string name="delete_string">DELETE</string>
+    <string name="enter_gear_name">Please enter a name for your gear</string>
+    <string name="enter_gear_weight">Please enter a weight for your gear</string>
+    <string name="gear_saved">Your gear was successfully saved</string>
+    <string name="gear_updated">Your gear was successfully updated</string>
+    <string name="item_not_loaded">The item could not be loaded</string>
 
 </resources>

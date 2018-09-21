@@ -77,10 +77,10 @@ public class EditGearActivity extends AppCompatActivity {
 
         // Get the intent that started this activity and receive the itemId;
         Intent intent = getIntent();
-        if (intent.hasExtra("GEAR_ITEM_ID_EXTRA")) {
+        if (intent.hasExtra(getString(R.string.ITEM_ID_EXTRA_KEY))) {
 
             isNewGearItem = false;
-            int itemId = intent.getIntExtra("GEAR_ITEM_ID_EXTRA", -1);
+            int itemId = intent.getIntExtra(getString(R.string.ITEM_ID_EXTRA_KEY), -1);
 
             // Get the database and execute AsyncTask to retrieve the item data
             TravelPackRoomDatabase db = TravelPackRoomDatabase.getDatabase(this);
@@ -137,17 +137,17 @@ public class EditGearActivity extends AppCompatActivity {
         if (id == R.id.action_save_gear) {
 
             if (mGearName.getText().toString().equals("")) {
-                Toast.makeText(this, "Please enter a name for your gear", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.enter_gear_name, Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             if (mGearWeight.getText().toString().equals("")) {
-                Toast.makeText(this, "Please enter a weight for your gear", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.enter_gear_weight, Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             if (mImagePath == null) {
-                mImagePath = "android.resource://" + this.getPackageName() + "/" + R.drawable.gear;
+                mImagePath = getString(R.string.android_resources) + this.getPackageName() + "/" + R.drawable.gear;
             }
 
             String mName = mGearName.getText().toString();
@@ -159,7 +159,7 @@ public class EditGearActivity extends AppCompatActivity {
 
                 AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertItem(mGearItem));
 
-                Toast.makeText(this, "Your gear was successfully saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.gear_saved, Toast.LENGTH_SHORT).show();
                 finish();
                 return true;
 
@@ -170,12 +170,12 @@ public class EditGearActivity extends AppCompatActivity {
 
                 AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.updateGearItem(mGearItem));
 
-                Toast.makeText(this, "Your gear was successfully updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.gear_updated, Toast.LENGTH_SHORT).show();
                 finish();
                 return true;
             }
         } else if (item.getItemId() == android.R.id.home) {
-            Toast.makeText(this, "Your changes have been dismissed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.changes_dismissed, Toast.LENGTH_SHORT).show();
             return super.onOptionsItemSelected(item);
         }
 
@@ -225,7 +225,7 @@ public class EditGearActivity extends AppCompatActivity {
                 activity.mImagePath = activity.mGearItem.getItemImagePath();
                 Glide.with(activity).load(activity.mImagePath).into(activity.mGearImage);
             } else {
-                Toast.makeText(activity, "The item could not be loaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.item_not_loaded, Toast.LENGTH_SHORT).show();
             }
         }
     }

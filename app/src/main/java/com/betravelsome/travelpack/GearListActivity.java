@@ -48,8 +48,8 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
 
         // Get the intent that started the activity, receive the tripId and set the list to pickable;
         Intent intent = getIntent();
-        if (intent.hasExtra("TRIP_ID_EXTRA")) {
-            mTripId = intent.getIntExtra("TRIP_ID_EXTRA", -1);
+        if (intent.hasExtra(getString(R.string.TRIP_ID_EXTRA_KEY))) {
+            mTripId = intent.getIntExtra(getString(R.string.TRIP_ID_EXTRA_KEY), -1);
 
             isItemPickActivity = true;
         }
@@ -86,7 +86,7 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
         } else {
             // Start Edit Gear Activity for the selected Trip
             Intent editGearItemIntend = new Intent(GearListActivity.this, EditGearActivity.class);
-            editGearItemIntend.putExtra("GEAR_ITEM_ID_EXTRA", clickedItemId);
+            editGearItemIntend.putExtra(getString(R.string.GEAR_ITEM_ID_EXTRA_KEY), clickedItemId);
             startActivity(editGearItemIntend);
         }
     }
@@ -98,8 +98,8 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
         if (mTripId != -1 && mClickedItemId != -1) {
             // Prepare data intent
             Intent data = new Intent();
-            data.putExtra("TRIP_ID_EXTRA", mTripId);
-            data.putExtra("ITEM_ID_EXTRA", mClickedItemId);
+            data.putExtra(getString(R.string.TRIP_ID_EXTRA_KEY), mTripId);
+            data.putExtra(getString(R.string.ITEM_ID_EXTRA_KEY), mClickedItemId);
             // Activity finished ok, return the data
             setResult(RESULT_OK, data);
         }
@@ -110,14 +110,14 @@ public class GearListActivity extends AppCompatActivity implements GearItemAdapt
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setMessage("Deleting this item will remove it from all your trips too!")
-                .setTitle("Delete?");
+        builder.setMessage(R.string.delete_item_dialog)
+                .setTitle(R.string.delete_dialog_title);
 
-        builder.setPositiveButton("DELETE", (dialog, id) -> {
+        builder.setPositiveButton(R.string.delete_string, (dialog, id) -> {
             Item itemToDelete = mItemAdapter.getItemByPosition(position);
             AppExecutors.getInstance().diskIO().execute(() -> GearListActivity.this.mTravelPackViewModel.deleteGearItem(itemToDelete));
         });
-        builder.setNegativeButton("CANCEL", (dialog, id) -> GearListActivity.this.mItemAdapter.notifyDataSetChanged());
+        builder.setNegativeButton(R.string.cancel, (dialog, id) -> GearListActivity.this.mItemAdapter.notifyDataSetChanged());
 
         AlertDialog dialog = builder.create();
 

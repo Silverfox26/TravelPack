@@ -164,17 +164,17 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
 
         if (id == R.id.action_save_trip) {
             if (mTripName.getText().toString().equals("")) {
-                Toast.makeText(this, "Please enter a name for your trip", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.enter_trip_name, Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             if (mPlaceId == null) {
-                Toast.makeText(this, "Please pick a destination for your trip", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.pick_destination, Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             if (mImagePath == null) {
-                mImagePath = "android.resource://" + this.getPackageName() + "/" + R.drawable.trip;
+                mImagePath = getString(R.string.android_resources) + this.getPackageName() + "/" + R.drawable.trip;
             }
 
             String tripName = mTripName.getText().toString();
@@ -183,11 +183,11 @@ public class EditTripActivity extends AppCompatActivity implements OnMapReadyCal
 
             AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertTrip(trip));
 
-            Toast.makeText(this, "Your trip was successfully saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.trip_saved, Toast.LENGTH_SHORT).show();
             finish();
             return true;
         } else if (item.getItemId() == android.R.id.home) {
-            Toast.makeText(this, "Your changes have been dismissed.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.changes_dismissed, Toast.LENGTH_SHORT).show();
             return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);

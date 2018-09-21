@@ -72,7 +72,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         fab.setOnClickListener(view -> {
             // Start Pick Gear List Activity to select a gear item to be added to the packing list
             Intent packingListIntend = new Intent(PackingListActivity.this, GearListActivity.class);
-            packingListIntend.putExtra("TRIP_ID_EXTRA", mTripId);
+            packingListIntend.putExtra(getString(R.string.TRIP_ID_EXTRA_KEY), mTripId);
             startActivityForResult(packingListIntend, GEAR_PICKER_REQUEST);
         });
 
@@ -85,9 +85,9 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
         // Get the intent, check its content, and populate the UI with its data
         Intent intent = getIntent();
-        if (intent.hasExtra("TRIP_ID_EXTRA") && intent.hasExtra("TRIP_NAME_EXTRA")) {
-            mTripId = intent.getIntExtra("TRIP_ID_EXTRA", -1);
-            mTripName = intent.getStringExtra("TRIP_NAME_EXTRA");
+        if (intent.hasExtra(getString(R.string.TRIP_ID_EXTRA_KEY)) && intent.hasExtra(getString(R.string.TRIP_NAME_EXTRA_KEY))) {
+            mTripId = intent.getIntExtra(getString(R.string.TRIP_ID_EXTRA_KEY), -1);
+            mTripName = intent.getStringExtra(getString(R.string.TRIP_NAME_EXTRA_KEY));
 
             // Construct a GeoDataClient.
             mGeoDataClient = Places.getGeoDataClient(this);
@@ -96,7 +96,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
         // Fallback in case the trip name is an empty String
         if (mTripName.equals("")) {
-            mTripName = "Your Packing List";
+            mTripName = getString(R.string.your_packing_list);
         }
 
         getSupportActionBar().setTitle(mTripName);
@@ -154,8 +154,8 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GEAR_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
-                int itemId = data.getIntExtra("ITEM_ID_EXTRA", -1);
-                mTripId = data.getIntExtra("TRIP_ID_EXTRA", -1);
+                int itemId = data.getIntExtra(getString(R.string.ITEM_ID_EXTRA_KEY), -1);
+                mTripId = data.getIntExtra(getString(R.string.TRIP_ID_EXTRA_KEY), -1);
 
                 AppExecutors.getInstance().diskIO().execute(() -> this.mTravelPackViewModel.insertTripItemJoin(mTripId, itemId));
             }
@@ -172,7 +172,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
     @Override
     public void onSumDataChanged(float weightSum) {
         // Update the textView with the new weight sum
-        String weightSumString = String.format(Locale.ENGLISH, "%.2f", weightSum);
+        String weightSumString = String.format(Locale.ENGLISH, getString(R.string.decimal_places_format), weightSum);
         gearWeightSumTextView.setText(weightSumString);
     }
 
@@ -204,7 +204,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
                 PackingListForWidget packingList = mPackingListAdapter.getPackingList();
                 // Update the widget with the currently selected packing list
                 TravelPackWidgetService.updateWidget(this, packingList, mTripId, mTripName);
-                Toast.makeText(this, "Added to Widget", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.toast_added_to_widget, Toast.LENGTH_SHORT).show();
                 return true;
             case android.R.id.home:
                 // Create a back stack if the activity was started by clicking on the widget
@@ -273,11 +273,11 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
                         places.release();
                     } else {
-                        Toast.makeText(activity, "The destination could not be found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, R.string.destination_not_found, Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
-                Toast.makeText(activity, "The destination could not be found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.destination_not_found, Toast.LENGTH_SHORT).show();
             }
         }
     }
