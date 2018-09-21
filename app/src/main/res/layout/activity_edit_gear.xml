@@ -37,6 +37,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="ITEM NAME"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="@+id/textViewGearNameTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewGearNameTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textViewGearNameTitle" />
@@ -56,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="WEIGHT"
+                android:textAlignment="viewStart"
                 app:layout_constraintBaseline_toBaselineOf="@+id/editTextWeight"
                 app:layout_constraintStart_toStartOf="@+id/editTextGearName" />
 
@@ -66,7 +69,7 @@
                 android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                android:textAlignment="textEnd"
+                android:textAlignment="viewStart"
                 app:layout_constraintStart_toEndOf="@+id/textViewWeightTitle"
                 app:layout_constraintTop_toBottomOf="@+id/editTextGearName" />
 
@@ -76,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="kg"
+                android:textAlignment="viewStart"
                 app:layout_constraintBaseline_toBaselineOf="@+id/editTextWeight"
                 app:layout_constraintEnd_toEndOf="@+id/editTextGearName"
                 app:layout_constraintStart_toEndOf="@+id/editTextWeight" />
@@ -86,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="@+id/textViewUnit"
                 app:layout_constraintStart_toStartOf="@+id/textViewWeightTitle"
                 app:layout_constraintTop_toBottomOf="@+id/editTextWeight"
@@ -94,13 +99,14 @@
             <ImageView
                 android:id="@+id/imageViewGear"
                 android:layout_width="0dp"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
+                android:contentDescription="An image showing the gear."
+                android:scaleType="centerInside"
                 app:layout_constraintEnd_toEndOf="@+id/textViewImageTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewImageTitle"
-                app:layout_constraintTop_toBottomOf="@+id/textViewImageTitle"
-                app:srcCompat="@color/colorPrimary" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewImageTitle" />
 
             <Button
                 android:id="@+id/buttonAddGearImage"

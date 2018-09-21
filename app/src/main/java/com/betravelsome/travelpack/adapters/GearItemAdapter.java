@@ -60,8 +60,7 @@ public class GearItemAdapter extends RecyclerView.Adapter<GearItemAdapter.GearIt
 
         holder.mGearItemName.setText(gearItemName);
 
-        String gearItemWeightString = String.format(Locale.ENGLISH, "%.2f", gearItemWeight) +
-                " kg";
+        String gearItemWeightString = String.format(Locale.ENGLISH, "%.2f", gearItemWeight);
         holder.mGearItemWeight.setText(gearItemWeightString);
 
         // Create the image URI and display it using Glide

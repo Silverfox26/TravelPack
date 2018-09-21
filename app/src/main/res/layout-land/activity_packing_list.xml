@@ -62,16 +62,55 @@
 
     <TextView
         android:id="@+id/textViewWeightSum"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/darker_gray"
+        android:background="?attr/colorPrimary"
         android:paddingBottom="16dp"
         android:paddingTop="8dp"
-        android:text="TextView"
         android:textAlignment="center"
+        android:textColor="?android:attr/textColorPrimaryInverse"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.61"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="12.5" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:paddingBottom="16dp"
+        android:paddingStart="4dp"
+        android:paddingTop="8dp"
+        android:text="kg"
+        android:textAlignment="viewStart"
+        android:textColor="?android:attr/textColorPrimaryInverse"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewWeightSum"
+        app:layout_constraintTop_toTopOf="@+id/textViewWeightSum" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/colorPrimary"
+        android:paddingBottom="16dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:text="Pack weight:"
+        android:textAlignment="viewEnd"
+        android:textColor="?android:attr/textColorPrimaryInverse"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewWeightSum"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewWeightSum"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

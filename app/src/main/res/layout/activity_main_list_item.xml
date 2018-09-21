@@ -16,26 +16,21 @@
             android:id="@+id/imageViewTrip"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@color/colorPrimary" />
+            android:contentDescription="An image representing the trip."
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/textViewTripName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textAlignment="viewStart"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="South America" />
-
-        <TextView
-            android:id="@+id/textViewPackWeight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="TextView"
-            tools:text="Pack Weight: 15.25kg" />
 
     </LinearLayout>
 

@@ -12,41 +12,44 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:contentDescription="An image depicting the gear"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/colorPrimary" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewGearName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        android:text="marquee_forever"
         android:textColor="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewGear"
-        app:layout_constraintTop_toTopOf="@+id/imageViewGear"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Sleeping Bag" />
-
-    <TextView
-        android:id="@+id/textViewGearCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/textViewGearName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewGearName"
-        tools:text="Sleeping" />
 
     <TextView
         android:id="@+id/textViewGearItemWeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
+        android:layout_marginEnd="4dp"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewGear"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
         app:layout_constraintTop_toTopOf="@+id/imageViewGear"
-        tools:text="1.0kg" />
+        tools:text="1.0" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="kg"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewGearItemWeight"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

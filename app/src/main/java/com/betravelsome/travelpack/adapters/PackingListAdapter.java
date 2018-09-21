@@ -81,14 +81,12 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
 
         holder.mGearItemName.setText(gearItemName);
 
-        String gearItemWeightString = String.format(Locale.ENGLISH, "%.2f", gearItemWeight) +
-                " kg";
+        String gearItemWeightString = String.format(Locale.ENGLISH, "%.2f", gearItemWeight);
         holder.mGearItemWeight.setText(gearItemWeightString);
         holder.mGearItemAmount.setText(String.valueOf(gearItemAmount));
 
         Float gearWeightSum = gearItemAmount * gearItemWeight;
-        String gearItemWeightSumString = String.format(Locale.ENGLISH, "%.2f", gearWeightSum) +
-                " kg";
+        String gearItemWeightSumString = String.format(Locale.ENGLISH, "%.2f", gearWeightSum);
         holder.mGearWeightSum.setText(gearItemWeightSumString);
 
         holder.mGearItemPlus.setOnClickListener(new View.OnClickListener() {

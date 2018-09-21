@@ -188,9 +188,7 @@ public class PackingListActivity extends AppCompatActivity implements PackingLis
 
     @Override
     public void onSumDataChanged(float weightSum) {
-        String weightSumString = "Pack Weight: " +
-                String.format(Locale.ENGLISH, "%.2f", weightSum) +
-                " kg";
+        String weightSumString = String.format(Locale.ENGLISH, "%.2f", weightSum);
         gearWeightSumTextView.setText(weightSumString);
     }
 

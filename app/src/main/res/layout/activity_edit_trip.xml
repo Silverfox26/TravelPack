@@ -38,6 +38,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="TRIP NAME"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="@+id/textViewTripNameTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewTripNameTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTripNameTitle" />
@@ -59,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="DESTINATION"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="@+id/editTextTripName"
                 app:layout_constraintStart_toStartOf="@+id/editTextTripName"
                 app:layout_constraintTop_toBottomOf="@+id/editTextTripName" />
@@ -82,7 +85,8 @@
                     android:ems="10"
                     android:enabled="false"
                     android:gravity="center_vertical"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    android:textAlignment="viewStart" />
 
                 <Button
                     android:id="@+id/buttonChooseDestination"
@@ -96,10 +100,10 @@
 
             <fragment
                 android:id="@+id/mapView"
-                android:layout_width="0dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="8dp"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayoutDestination"
                 app:layout_constraintStart_toStartOf="@+id/linearLayoutDestination"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayoutDestination" />
@@ -110,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="IMAGE"
+                android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="@+id/mapView"
                 app:layout_constraintStart_toStartOf="@+id/mapView"
                 app:layout_constraintTop_toBottomOf="@+id/mapView" />
@@ -117,14 +122,14 @@
             <ImageView
                 android:id="@+id/imageViewTrip"
                 android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                android:contentDescription="An image representing the trip."
+                android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="@+id/textViewImageTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewImageTitle"
-                app:layout_constraintTop_toBottomOf="@+id/textViewImageTitle"
-                app:srcCompat="@color/colorPrimary" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewImageTitle" />
 
             <Button
                 android:id="@+id/buttonChooseTripImage"
