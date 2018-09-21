@@ -6,6 +6,6 @@
     <item
         android:id="@+id/action_save_gear"
         android:orderInCategory="100"
-        android:title="Save"
+        android:title="@string/save"
         app:showAsAction="always" />
 </menu>

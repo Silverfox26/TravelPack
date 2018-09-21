@@ -4,5 +4,23 @@
     <string name="title_activity_gear_list">Gear List</string>
     <string name="title_activity_edit_gear">Edit Gear</string>
     <string name="title_activity_edit_trip">Add Trip</string>
+    <string name="item_name_title">ITEM NAME</string>
+    <string name="weight_title">WEIGHT</string>
+    <string name="unit_weight">kg</string>
+    <string name="image_title">IMAGE</string>
+    <string name="gear_image_content_desc">An image showing the gear.</string>
+    <string name="add_image_button">ADD IMAGE</string>
+    <string name="trip_name_title">TRIP NAME</string>
+    <string name="destination_title">DESTINATION</string>
+    <string name="pick_destination_button">Pick Destination</string>
+    <string name="trip_image_content_desc">An image representing the trip.</string>
+    <string name="ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="pack_weight">Pack weight:</string>
+    <string name="up_arrow">^</string>
+    <string name="down_arrow">v</string>
+    <string name="weight">Weight:</string>
+    <string name="show_in_widget">Show in Widget</string>
+    <string name="save">Save</string>
+    <string name="gear_library">Gear Library</string>
 
 </resources>

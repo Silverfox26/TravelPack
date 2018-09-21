@@ -16,7 +16,7 @@
             android:id="@+id/imageViewTrip"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:contentDescription="An image representing the trip."
+            android:contentDescription="@string/trip_image_content_desc"
             android:scaleType="centerCrop" />
 
         <TextView

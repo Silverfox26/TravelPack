@@ -37,7 +37,8 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="TRIP NAME"
+                android:text="@string/trip_name_title"
+                android:labelFor="@+id/editTextTripName"
                 android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +61,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="DESTINATION"
+                android:text="@string/destination_title"
+                android:labelFor="@+id/editTextDestination"
                 android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="@+id/editTextTripName"
                 app:layout_constraintStart_toStartOf="@+id/editTextTripName"
@@ -84,7 +86,6 @@
                     android:layout_weight="2"
                     android:ems="10"
                     android:enabled="false"
-                    android:gravity="center_vertical"
                     android:inputType="none"
                     android:textAlignment="viewStart" />
 
@@ -95,7 +96,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:onClick="onPickDestinationButtonClick"
-                    android:text="Pick Destination" />
+                    android:text="@string/pick_destination_button" />
             </LinearLayout>
 
             <fragment
@@ -113,7 +114,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="IMAGE"
+                android:text="@string/image_title"
                 android:textAlignment="viewStart"
                 app:layout_constraintEnd_toEndOf="@+id/mapView"
                 app:layout_constraintStart_toStartOf="@+id/mapView"
@@ -125,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
-                android:contentDescription="An image representing the trip."
+                android:contentDescription="@string/trip_image_content_desc"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="@+id/textViewImageTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewImageTitle"
@@ -138,7 +139,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:onClick="onPickImageButtonClick"
-                android:text="PICK IMAGE"
+                android:text="@string/add_image_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/imageViewTrip"
                 app:layout_constraintStart_toStartOf="@+id/imageViewTrip"

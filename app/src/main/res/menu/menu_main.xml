@@ -5,6 +5,6 @@
     <item
         android:id="@+id/action_gear_items"
         android:orderInCategory="100"
-        android:title="Gear Library"
+        android:title="@string/gear_library"
         app:showAsAction="never" />
 </menu>
