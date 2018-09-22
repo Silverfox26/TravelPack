@@ -211,7 +211,7 @@ public class PackingListAdapter extends RecyclerView.Adapter<PackingListAdapter.
     private void getGearWeightSum() {
         Float weightSum = 0.0f;
 
-        if (null != mPackingListData) {
+        if (mPackingListData != null) {
 
             for (ItemPackingList item : mPackingListData) {
                 int itemAmount = item.getItemAmount();

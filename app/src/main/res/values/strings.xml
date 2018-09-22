@@ -47,5 +47,8 @@
     <string name="gear_saved">Your gear was successfully saved</string>
     <string name="gear_updated">Your gear was successfully updated</string>
     <string name="item_not_loaded">The item could not be loaded</string>
+    <string name="add_gear_item">Add a gear item</string>
+    <string name="add_trip">Add a trip</string>
+    <string name="add_gear_to_packing_list">Add gear item to the packing list</string>
 
 </resources>
